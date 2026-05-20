@@ -454,6 +454,52 @@ button[type="submit"]:hover {
   color: #c0392b;
 }
 
+.abas {
+  display: flex;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--bg);
+}
+
+.aba {
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--label);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.aba.ativa {
+  color: var(--botao-bg);
+  border-bottom-color: var(--botao-bg);
+  font-weight: bold;
+}
+
+.msg-erro {
+  color: #c0392b;
+  font-size: 13px;
+  margin-bottom: 8px;
+  min-height: 18px;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 12px;
+}
+
+.btn-logout:hover {
+  background: rgba(255,255,255,0.15);
+}
+}
+
 .btn-excluir {
   background: transparent;
   border: 1px solid #c0392b;

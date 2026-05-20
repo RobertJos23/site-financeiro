@@ -1,5 +1,22 @@
-﻿const form = document.getElementById('form-transacao')
-const transacoes = JSON.parse(localStorage.getItem('transacoes')) || []
+import { auth, db } from './firebase.js'
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
+import {
+    collection, addDoc, deleteDoc, doc, onSnapshot, query
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+
+onAuthStateChanged(auth, function(usuario) {
+    if (!usuario) {
+        window.location.href = 'login.html'
+    } else {
+        iniciar(usuario.uid)
+    }
+})
+
+document.getElementById('btn-logout').addEventListener('click', function() {
+    signOut(auth).then(function() {
+        window.location.href = 'login.html'
+    })
+})
 
 const btnTema = document.getElementById('btn-tema')
 btnTema.addEventListener('click', function() {
@@ -14,53 +31,48 @@ if (localStorage.getItem('tema') === 'dark') {
     btnTema.textContent = 'Modo Claro'
 }
 
-renderizarTransacoes()
-atualizarResumo()
-carregarSelectCategorias()
+function iniciar(uid) {
+    carregarSelectCategorias()
 
-function carregarSelectCategorias() {
-    const select = document.getElementById('categoria')
-    const categorias = JSON.parse(localStorage.getItem('categorias')) || ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
-    select.innerHTML = ''
-    categorias.forEach(function(nome) {
-        const option = document.createElement('option')
-        option.value = nome
-        option.textContent = nome.charAt(0).toUpperCase() + nome.slice(1)
-        select.appendChild(option)
+    const q = query(collection(db, 'usuarios', uid, 'transacoes'))
+    onSnapshot(q, function(snapshot) {
+        const transacoes = []
+        snapshot.forEach(function(d) {
+            transacoes.push({ id: d.id, ...d.data() })
+        })
+        renderizarTransacoes(transacoes)
+        atualizarResumo(transacoes)
     })
+
+    const form = document.getElementById('form-transacao')
+    form.addEventListener('submit', async function(evento) {
+        evento.preventDefault()
+
+        const transacao = {
+            descricao: document.getElementById('descricao').value,
+            valor: document.getElementById('valor').value,
+            tipo: document.getElementById('tipo').value,
+            categoria: document.getElementById('categoria').value,
+            data: document.getElementById('data').value
+        }
+
+        try {
+            await addDoc(collection(db, 'usuarios', uid, 'transacoes'), transacao)
+            form.reset()
+        } catch(e) {
+            console.error('Erro ao salvar:', e)
+        }
+    })
+
+    window._uid = uid
 }
 
-form.addEventListener('submit', function(evento) {
-    evento.preventDefault()
-
-    const descricao = document.getElementById('descricao').value
-    const valor = document.getElementById('valor').value
-    const tipo = document.getElementById('tipo').value
-    const categoria = document.getElementById('categoria').value
-    const data = document.getElementById('data').value
-
-    const transacao = {
-        descricao: descricao,
-        valor: valor,
-        tipo: tipo,
-        categoria: categoria,
-        data: data
-    }
-
-    transacoes.push(transacao)
-    localStorage.setItem('transacoes', JSON.stringify(transacoes))
-    renderizarTransacoes()
-    atualizarResumo()
-    form.reset()
-})
-
-function renderizarTransacoes() {
+function renderizarTransacoes(transacoes) {
     const lista = document.getElementById('lista-transacoes')
     lista.innerHTML = ''
 
-    transacoes.forEach(function(t, indice) {
+    transacoes.forEach(function(t) {
         const item = document.createElement('li')
-
         item.innerHTML = `
             <div>
                 <div class="item-descricao">${t.descricao}</div>
@@ -70,24 +82,20 @@ function renderizarTransacoes() {
                 <div class="item-valor">R$ ${Number(t.valor).toFixed(2)}</div>
                 <span class="item-tipo ${t.tipo}">${t.tipo}</span>
             </div>
-            <button class="btn-excluir" data-indice="${indice}">🗑</button>
+            <button class="btn-excluir" data-id="${t.id}">🗑</button>
         `
-
         lista.appendChild(item)
     })
 
     document.querySelectorAll('.btn-excluir').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const indice = Number(btn.dataset.indice)
-            transacoes.splice(indice, 1)
-            localStorage.setItem('transacoes', JSON.stringify(transacoes))
-            renderizarTransacoes()
-            atualizarResumo()
+        btn.addEventListener('click', async function() {
+            const id = btn.dataset.id
+            await deleteDoc(doc(db, 'usuarios', window._uid, 'transacoes', id))
         })
     })
 }
 
-function atualizarResumo() {
+function atualizarResumo(transacoes) {
     const receitas = transacoes
         .filter(function(t) { return t.tipo === 'receita' })
         .reduce(function(soma, t) { return soma + Number(t.valor) }, 0)
@@ -101,4 +109,16 @@ function atualizarResumo() {
     document.getElementById('total-receitas').textContent = 'R$ ' + receitas.toFixed(2)
     document.getElementById('total-despesas').textContent = 'R$ ' + despesas.toFixed(2)
     document.getElementById('saldo-total').textContent = 'R$ ' + saldo.toFixed(2)
+}
+
+function carregarSelectCategorias() {
+    const select = document.getElementById('categoria')
+    const categorias = JSON.parse(localStorage.getItem('categorias')) || ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
+    select.innerHTML = ''
+    categorias.forEach(function(nome) {
+        const option = document.createElement('option')
+        option.value = nome
+        option.textContent = nome.charAt(0).toUpperCase() + nome.slice(1)
+        select.appendChild(option)
+    })
 }

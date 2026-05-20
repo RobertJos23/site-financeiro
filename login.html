@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Controle Financeiro</h1>
+    </header>
+
+    <main>
+        <section class="formulario" style="max-width: 400px; margin: 60px auto;">
+            <div class="abas">
+                <button class="aba ativa" id="aba-login">Entrar</button>
+                <button class="aba" id="aba-cadastro">Cadastrar</button>
+            </div>
+
+            <form id="form-login">
+                <h2>Entrar</h2>
+                <div class="campo">
+                    <label for="email-login">E-mail</label>
+                    <input type="email" id="email-login" placeholder="seu@email.com">
+                </div>
+                <div class="campo">
+                    <label for="senha-login">Senha</label>
+                    <input type="password" id="senha-login" placeholder="Sua senha">
+                </div>
+                <p id="erro-login" class="msg-erro"></p>
+                <button type="submit">Entrar</button>
+            </form>
+
+            <form id="form-cadastro" style="display: none;">
+                <h2>Criar Conta</h2>
+                <div class="campo">
+                    <label for="email-cadastro">E-mail</label>
+                    <input type="email" id="email-cadastro" placeholder="seu@email.com">
+                </div>
+                <div class="campo">
+                    <label for="senha-cadastro">Senha</label>
+                    <input type="password" id="senha-cadastro" placeholder="Minimo 6 caracteres">
+                </div>
+                <p id="erro-cadastro" class="msg-erro"></p>
+                <button type="submit">Criar Conta</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="login.js" type="module"></script>
+</body>
+</html>
