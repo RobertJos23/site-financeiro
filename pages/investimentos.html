@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investimentos</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Controle Financeiro</h1>
+        <div style="display: flex; align-items: center;">
+            <nav>
+                <a href="../index.html">Transacoes</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="contas.html">Contas</a>
+                <a href="metas.html">Metas</a>
+                <a href="relatorios.html">Relatorios</a>
+                <a href="investimentos.html">Investimentos</a>
+            </nav>
+            <button id="btn-tema">Modo Escuro</button>
+            <button class="btn-logout" id="btn-logout">Sair</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="inv-controles">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <select id="select-moeda" class="inv-select">
+                    <option value="">Selecione uma moeda...</option>
+                </select>
+                <button id="btn-adicionar-moeda">+ Adicionar</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <label style="font-size: 14px; color: var(--label);">Atualizar a cada:</label>
+                <select id="intervalo-atualizacao" class="inv-select">
+                    <option value="1">1 minuto</option>
+                    <option value="5" selected>5 minutos</option>
+                    <option value="10">10 minutos</option>
+                    <option value="30">30 minutos</option>
+                </select>
+                <button id="btn-atualizar">&#8635; Atualizar</button>
+            </div>
+        </section>
+
+        <p id="ultima-atualizacao" class="inv-timestamp"></p>
+
+        <div id="painel-moedas" class="painel-moedas">
+            <p style="color: var(--label);">Nenhuma moeda adicionada. Selecione acima para comecar.</p>
+        </div>
+    </main>
+
+    <script src="../investimentos.js" type="module"></script>
+</body>
+</html>

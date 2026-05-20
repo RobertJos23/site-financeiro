@@ -512,6 +512,107 @@ button[type="submit"]:hover {
 .btn-logout:hover {
   background: rgba(255,255,255,0.15);
 }
+
+.inv-controles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.inv-select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  background: var(--card-bg);
+  color: var(--texto);
+  outline: none;
+  cursor: pointer;
+}
+
+.inv-select:focus {
+  border-color: var(--botao-bg);
+}
+
+.inv-controles button {
+  background: var(--botao-bg);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.inv-controles button:hover {
+  background: var(--botao-hover);
+}
+
+.inv-timestamp {
+  font-size: 12px;
+  color: var(--label);
+  margin-bottom: 20px;
+}
+
+.painel-moedas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.moeda-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.moeda-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.moeda-simbolo {
+  font-size: 12px;
+  font-weight: bold;
+  background: var(--bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 6px;
+  color: var(--label);
+}
+
+.moeda-nome {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.moeda-preco {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.moeda-variacao {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.moeda-variacao.positiva { color: #2d6a4f; }
+.moeda-variacao.negativa { color: #c0392b; }
+
+.mini-chart {
+  margin-top: 8px;
+  height: 60px !important;
 }
 
 .btn-excluir {
