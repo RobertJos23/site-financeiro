@@ -1,15 +1,19 @@
 import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+import { esconderLoading, configurarHamburger } from './utils.js'
 
 let graficoRD = null
 let graficoCat = null
 let graficoMetas = null
 
+configurarHamburger()
+
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = '../login.html'
     } else {
+        esconderLoading()
         iniciar(usuario.uid)
     }
 })

@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="loading" class="loading-overlay"><div class="spinner"></div></div>
+    <header>
+        <h1>Controle Financeiro</h1>
+        <div style="display: flex; align-items: center;">
+            <button id="btn-menu" class="btn-menu">&#9776;</button>
+            <nav>
+                <a href="../index.html">Transacoes</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="contas.html">Contas</a>
+                <a href="metas.html">Metas</a>
+                <a href="relatorios.html">Relatorios</a>
+                <a href="investimentos.html">Investimentos</a>
+                <a href="perfil.html">Perfil</a>
+            </nav>
+            <button id="btn-tema">Modo Escuro</button>
+            <button class="btn-logout" id="btn-logout">Sair</button>
+        </div>
+    </header>
+    <main>
+        <div class="perfil-card">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="perfil-avatar" id="avatar"></div>
+                <div class="perfil-info">
+                    <div class="perfil-nome" id="nome-perfil"></div>
+                    <div class="perfil-email" id="email-perfil"></div>
+                    <span class="provider-badge" id="provider-badge"></span>
+                </div>
+            </div>
+
+            <div class="perfil-secao">
+                <h3>Alterar nome</h3>
+                <form id="form-nome">
+                    <div class="campo">
+                        <label for="input-nome">Novo nome</label>
+                        <input type="text" id="input-nome" placeholder="Seu nome">
+                    </div>
+                    <button type="submit">Salvar nome</button>
+                </form>
+            </div>
+
+            <div class="perfil-secao" id="secao-senha">
+                <h3>Alterar senha</h3>
+                <form id="form-senha">
+                    <div class="campo">
+                        <label for="senha-atual">Senha atual</label>
+                        <input type="password" id="senha-atual" placeholder="Senha atual">
+                    </div>
+                    <div class="campo">
+                        <label for="nova-senha">Nova senha</label>
+                        <input type="password" id="nova-senha" placeholder="Minimo 6 caracteres">
+                    </div>
+                    <button type="submit">Alterar senha</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="../perfil.js" type="module"></script>
+</body>
+</html>

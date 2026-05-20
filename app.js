@@ -3,11 +3,15 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     collection, addDoc, deleteDoc, doc, onSnapshot, query, getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+import { esconderLoading, configurarHamburger, toast } from './utils.js'
+
+configurarHamburger()
 
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = 'login.html'
     } else {
+        esconderLoading()
         iniciar(usuario.uid)
     }
 })
@@ -59,8 +63,9 @@ function iniciar(uid) {
         try {
             await addDoc(collection(db, 'usuarios', uid, 'transacoes'), transacao)
             form.reset()
+            toast('Transacao adicionada!')
         } catch(e) {
-            console.error('Erro ao salvar:', e)
+            toast('Erro ao salvar transacao.', 'erro')
         }
     })
 

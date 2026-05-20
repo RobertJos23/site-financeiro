@@ -3,13 +3,17 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     doc, getDoc, setDoc, collection, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+import { esconderLoading, configurarHamburger, toast } from './utils.js'
 
 const categoriasPadrao = ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
+
+configurarHamburger()
 
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = '../login.html'
     } else {
+        esconderLoading()
         iniciar(usuario.uid)
     }
 })
@@ -94,7 +98,7 @@ function iniciar(uid) {
         if (!nome) return
 
         const cats = await carregarCategorias(uid)
-        if (cats.includes(nome)) { alert('Essa categoria ja existe!'); return }
+        if (cats.includes(nome)) { toast('Essa categoria ja existe!', 'aviso'); return }
 
         cats.push(nome)
         await salvarCategorias(uid, cats)

@@ -3,11 +3,15 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     collection, addDoc, deleteDoc, doc, onSnapshot, getDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+import { esconderLoading, configurarHamburger, toast } from './utils.js'
+
+configurarHamburger()
 
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = '../login.html'
     } else {
+        esconderLoading()
         iniciar(usuario.uid)
     }
 })
@@ -118,7 +122,7 @@ function iniciar(uid) {
     })
 
     document.getElementById('btn-lancar').addEventListener('click', async function() {
-        if (contasAtuais.length === 0) { alert('Nenhuma conta fixa cadastrada.'); return }
+        if (contasAtuais.length === 0) { toast('Nenhuma conta fixa cadastrada.', 'aviso'); return }
         await lancarContasDoMes(uid, contasAtuais)
     })
 

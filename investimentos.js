@@ -1,6 +1,7 @@
 import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+import { esconderLoading, configurarHamburger } from './utils.js'
 
 const MOEDAS_DISPONIVEIS = [
     { id: 'USD-BRL', nome: 'Dólar Americano', simbolo: 'USD', tipo: 'forex' },
@@ -21,11 +22,14 @@ const chartInstances = {}
 let intervalId = null
 let uid = null
 
+configurarHamburger()
+
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = '../login.html'
     } else {
         uid = usuario.uid
+        esconderLoading()
         iniciar()
     }
 })
