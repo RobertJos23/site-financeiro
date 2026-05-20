@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metas</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>Controle Financeiro</h1>
+        <div style="display: flex; align-items: center;">
+            <nav>
+                <a href="../index.html">Transacoes</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="contas.html">Contas</a>
+                <a href="metas.html">Metas</a>
+                <a href="relatorios.html">Relatorios</a>
+            </nav>
+            <button id="btn-tema">Modo Escuro</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="formulario">
+            <h2>Nova Meta</h2>
+            <form id="form-meta">
+                <div class="campo">
+                    <label for="nome-meta">Nome</label>
+                    <input type="text" id="nome-meta" placeholder="Ex: Viagem para o nordeste">
+                </div>
+                <div class="campo">
+                    <label for="valor-meta">Valor Alvo (R$)</label>
+                    <input type="number" id="valor-meta" placeholder="0,00" min="0" step="0.01">
+                </div>
+                <button type="submit">Criar Meta</button>
+            </form>
+        </section>
+
+        <section class="lista-metas">
+            <h2>Minhas Metas</h2>
+            <div id="lista-metas"></div>
+        </section>
+    </main>
+
+    <script src="../metas.js"></script>
+</body>
+</html>

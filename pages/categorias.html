@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>Controle Financeiro</h1>
+        <div style="display: flex; align-items: center;">
+            <nav>
+                <a href="../index.html">Transações</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="contas.html">Contas</a>
+                <a href="metas.html">Metas</a>
+                <a href="relatorios.html">Relatórios</a>
+            </nav>
+            <button id="btn-tema">Modo Escuro</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="formulario">
+            <h2>Nova Categoria</h2>
+            <form id="form-categoria">
+                <div class="campo">
+                    <label for="nome-categoria">Nome</label>
+                    <input type="text" id="nome-categoria" placeholder="Ex: Academia">
+                </div>
+                <button type="submit">Adicionar</button>
+            </form>
+        </section>
+
+        <section class="lista">
+            <h2>Categorias</h2>
+            <ul id="lista-categorias"></ul>
+        </section>
+    </main>
+
+    <script src="../categorias.js"></script>
+</body>
+</html>
