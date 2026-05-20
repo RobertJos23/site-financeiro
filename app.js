@@ -1,7 +1,7 @@
 import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import {
-    collection, addDoc, deleteDoc, doc, onSnapshot, query
+    collection, addDoc, deleteDoc, doc, onSnapshot, query, getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
 
 onAuthStateChanged(auth, function(usuario) {
@@ -32,7 +32,7 @@ if (localStorage.getItem('tema') === 'dark') {
 }
 
 function iniciar(uid) {
-    carregarSelectCategorias()
+    carregarSelectCategorias(uid)
 
     const q = query(collection(db, 'usuarios', uid, 'transacoes'))
     onSnapshot(q, function(snapshot) {
@@ -82,7 +82,7 @@ function renderizarTransacoes(transacoes) {
                 <div class="item-valor">R$ ${Number(t.valor).toFixed(2)}</div>
                 <span class="item-tipo ${t.tipo}">${t.tipo}</span>
             </div>
-            <button class="btn-excluir" data-id="${t.id}">🗑</button>
+            <button class="btn-excluir" data-id="${t.id}">×</button>
         `
         lista.appendChild(item)
     })
@@ -111,9 +111,11 @@ function atualizarResumo(transacoes) {
     document.getElementById('saldo-total').textContent = 'R$ ' + saldo.toFixed(2)
 }
 
-function carregarSelectCategorias() {
+async function carregarSelectCategorias(uid) {
     const select = document.getElementById('categoria')
-    const categorias = JSON.parse(localStorage.getItem('categorias')) || ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
+    const ref = doc(db, 'usuarios', uid, 'dados', 'categorias')
+    const snap = await getDoc(ref)
+    const categorias = snap.exists() ? snap.data().lista : ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
     select.innerHTML = ''
     categorias.forEach(function(nome) {
         const option = document.createElement('option')

@@ -168,6 +168,20 @@ button[type="submit"]:hover {
   max-width: 800px;
 }
 
+#btn-lancar {
+  background: var(--botao-bg);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#btn-lancar:hover:not(:disabled) {
+  background: var(--botao-hover);
+}
+
 .lista h2 {
   color: var(--botao-bg);
   margin-bottom: 16px;
@@ -501,18 +515,28 @@ button[type="submit"]:hover {
 }
 
 .btn-excluir {
-  background: transparent;
-  border: 1px solid #c0392b;
-  color: #c0392b;
+  background: #c0392b !important;
+  border: none !important;
+  color: white !important;
   font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
-  margin-left: 16px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background 0.2s, color 0.2s;
+  margin-left: 12px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  padding: 0;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
 
 .btn-excluir:hover {
-  background: #c0392b;
-  color: white;
+  background: #922b21 !important;
 }
