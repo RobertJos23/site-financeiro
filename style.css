@@ -498,6 +498,43 @@ button[type="submit"]:hover {
   min-height: 18px;
 }
 
+.separador-linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--label);
+  font-size: 13px;
+}
+
+.separador-linha::before,
+.separador-linha::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--bg);
+}
+
+#btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#btn-google:hover {
+  background: #f5f5f5;
+}
+
 .btn-logout {
   background: transparent;
   border: 1px solid white;
