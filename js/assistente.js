@@ -5,8 +5,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
 import { esconderLoading, configurarHamburger } from '../js/utils.js'
 
-const GEMINI_KEY = 'AIzaSyA4M0tXtt0LGNsfnheVloyStlJKi3JiOlw'
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`
+const GROQ_KEY = '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'
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+const GROQ_MODEL = 'llama-3.3-70b-versatile'
 
 configurarHamburger()
 
@@ -120,26 +121,34 @@ function configurarChat() {
         btnEnviar.disabled = true
         const idDigitando = adicionarMensagem('Digitando...', 'ia', true)
 
-        historico.push({ role: 'user', parts: [{ text: texto }] })
+        historico.push({ role: 'user', content: texto })
 
         try {
-            const resposta = await fetch(GEMINI_URL, {
+            const resposta = await fetch(GROQ_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + GROQ_KEY
+                },
                 body: JSON.stringify({
-                    system_instruction: { parts: [{ text: contextoUsuario }] },
-                    contents: historico
+                    model: GROQ_MODEL,
+                    messages: [{ role: 'system', content: contextoUsuario }, ...historico]
                 })
             })
 
             const dados = await resposta.json()
-            const textoResposta = dados.candidates[0].content.parts[0].text
+            console.log('Groq resposta:', dados)
 
-            historico.push({ role: 'model', parts: [{ text: textoResposta }] })
+            if (!resposta.ok) throw new Error(dados.error?.message || resposta.status)
+
+            const textoResposta = dados.choices[0].message.content
+
+            historico.push({ role: 'assistant', content: textoResposta })
 
             document.getElementById(idDigitando).remove()
             adicionarMensagem(textoResposta, 'ia')
         } catch(e) {
+            console.error('Erro Gemini:', e)
             document.getElementById(idDigitando).remove()
             adicionarMensagem('Erro ao conectar com a IA. Tente novamente.', 'ia')
         }
