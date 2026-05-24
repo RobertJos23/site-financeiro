@@ -1,7 +1,7 @@
-﻿import { auth } from './firebase.js'
+import { auth } from './firebase.js'
 import {
-    on uthStateChanged, signOut, updateProfile,
-    updatePassword, reauthenticateWithCredential, Email uthProvider
+    onAuthStateChanged, signOut, updateProfile,
+    updatePassword, reauthenticateWithCredential, EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import { esconderLoading, configurarHamburger, toast } from './utils.js'
 
@@ -23,7 +23,7 @@ document.getElementById('btn-logout').addEventListener('click', function() {
     signOut(auth).then(function() { window.location.href = '../login.html' })
 })
 
-on uthStateChanged(auth, function(usuario) {
+onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = '../login.html'
         return
@@ -84,16 +84,16 @@ function configurarFormNome(usuario) {
 function configurarFormSenha(usuario) {
     document.getElementById('form-senha').addEventListener('submit', async function(e) {
         e.preventDefault()
-        const senha tual = document.getElementById('senha-atual').value
+        const senhaAtual = document.getElementById('senha-atual').value
         const novaSenha = document.getElementById('nova-senha').value
 
         if (novaSenha.length < 6) {
-            toast('  nova senha precisa ter no minimo 6 caracteres.', 'aviso')
+            toast('A nova senha precisa ter no mínimo 6 caracteres.', 'aviso')
             return
         }
 
         try {
-            const credencial = Email uthProvider.credential(usuario.email, senha tual)
+            const credencial = EmailAuthProvider.credential(usuario.email, senhaAtual)
             await reauthenticateWithCredential(usuario, credencial)
             await updatePassword(usuario, novaSenha)
             document.getElementById('form-senha').reset()
