@@ -38,14 +38,24 @@
 
     <main>
         <section class="chat-container">
-            <h2>Assistente Financeiro IA</h2>
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-avatar">&#129302;</span>
+                    <div>
+                        <div class="chat-titulo">Assistente Financeiro</div>
+                        <div class="chat-subtitulo">Powered by Llama 3.3 · Online</div>
+                    </div>
+                </div>
+            </div>
             <div id="area-mensagens" class="chat-mensagens">
                 <div class="msg msg-ia">Olá! Sou seu assistente financeiro. Posso responder perguntas sobre seus gastos, metas e investimentos. Como posso ajudar?</div>
             </div>
-            <form id="form-chat" class="chat-form">
-                <input type="text" id="input-mensagem" placeholder="Pergunte algo sobre suas finanças...">
-                <button type="submit" id="btn-enviar">Enviar</button>
-            </form>
+            <div class="chat-form-wrapper">
+                <form id="form-chat" class="chat-form">
+                    <input type="text" id="input-mensagem" placeholder="Pergunte algo sobre suas finanças...">
+                    <button type="submit" id="btn-enviar" title="Enviar">&#8593;</button>
+                </form>
+            </div>
         </section>
     </main>
 
