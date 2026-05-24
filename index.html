@@ -26,6 +26,7 @@
             <button id="btn-fechar-sidebar" class="btn-fechar-sidebar">&#10005;</button>
         </div>
         <nav class="sidebar-nav">
+            <a href="pages/dashboard.html">Dashboard</a>
             <a href="pages/assistente.html">Assistente IA</a>
             <a href="index.html">Transações</a>
             <a href="pages/categorias.html">Categorias</a>
@@ -98,6 +99,20 @@
 
         <section class="lista">
             <h2>Transações</h2>
+            <div class="filtros-barra">
+                <select id="filtro-tipo">
+                    <option value="">Todos os tipos</option>
+                    <option value="receita">Receita</option>
+                    <option value="despesa">Despesa</option>
+                </select>
+                <select id="filtro-categoria-filtro">
+                    <option value="">Todas as categorias</option>
+                </select>
+                <input type="date" id="filtro-data-inicio" title="Data início">
+                <input type="date" id="filtro-data-fim" title="Data fim">
+                <button class="btn-limpar" id="btn-limpar-filtros">Limpar</button>
+                <button class="btn-exportar" id="btn-exportar-csv">⬇ Exportar CSV</button>
+            </div>
             <ul id="lista-transacoes"></ul>
         </section>
     </main>

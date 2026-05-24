@@ -6,6 +6,7 @@ import { esconderLoading, configurarHamburger } from './utils.js'
 let graficoRD = null
 let graficoCat = null
 let graficoMetas = null
+let graficoHistorico = null
 
 configurarHamburger()
 
@@ -86,6 +87,46 @@ function renderizarTabela(transacoes) {
     })
 }
 
+function renderizarHistoricoMensal(todasTransacoes) {
+    const agora = new Date()
+    const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+    const labels = []
+    const keys = []
+
+    for (let i = 5; i >= 0; i--) {
+        const d = new Date(agora.getFullYear(), agora.getMonth() - i, 1)
+        keys.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`)
+        labels.push(mesesNome[d.getMonth()])
+    }
+
+    const receitasMes = keys.map(function(key) {
+        return todasTransacoes
+            .filter(function(t) { return t.tipo === 'receita' && t.data && t.data.startsWith(key) })
+            .reduce(function(s, t) { return s + Number(t.valor) }, 0)
+    })
+    const despesasMes = keys.map(function(key) {
+        return todasTransacoes
+            .filter(function(t) { return t.tipo === 'despesa' && t.data && t.data.startsWith(key) })
+            .reduce(function(s, t) { return s + Number(t.valor) }, 0)
+    })
+
+    if (graficoHistorico) graficoHistorico.destroy()
+    graficoHistorico = new Chart(document.getElementById('grafico-historico-mensal'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Receitas', data: receitasMes, backgroundColor: '#2d6a4f' },
+                { label: 'Despesas', data: despesasMes, backgroundColor: '#c0392b' }
+            ]
+        },
+        options: {
+            plugins: { legend: { position: 'bottom' } },
+            scales: { y: { beginAtZero: true } }
+        }
+    })
+}
+
 async function atualizar(uid) {
     const mes = document.getElementById('filtro-mes').value
     const ano = document.getElementById('filtro-ano').value
@@ -107,6 +148,7 @@ async function atualizar(uid) {
     renderizarGraficoRD(transacoes)
     renderizarGraficoCategorias(transacoes)
     renderizarGraficoMetas(metas)
+    renderizarHistoricoMensal(todasTransacoes)
     renderizarTabela(transacoes)
 }
 

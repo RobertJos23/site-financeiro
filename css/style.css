@@ -1088,3 +1088,175 @@ body.dark .btn-logout:hover {
   #lista-categorias { grid-template-columns: 1fr 1fr; }
   #lista-contas { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── Dashboard ── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.dash-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+
+.dash-largo {
+  grid-column: span 2;
+}
+
+.dash-card h3 {
+  font-size: 12px;
+  color: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.dash-item {
+  margin-bottom: 14px;
+}
+
+.dash-item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.dash-item-nome {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.dash-item-valor {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dash-conta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg);
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.dash-conta-item.urgente {
+  background: #FEF2F2;
+  border-left: 3px solid #c0392b;
+}
+
+body.dark .dash-conta-item.urgente {
+  background: rgba(220,38,38,0.12);
+}
+
+/* ── Filtros de transações ── */
+.filtros-barra {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.filtros-barra select,
+.filtros-barra input[type="date"] {
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  background: var(--card-bg);
+  color: var(--texto);
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-exportar {
+  background: transparent;
+  border: 1px solid var(--borda);
+  color: var(--texto);
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.btn-exportar:hover { background: var(--bg); }
+
+.btn-limpar {
+  background: transparent;
+  border: 1px solid var(--borda);
+  color: var(--label);
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-limpar:hover { background: var(--bg); }
+
+/* ── Orçamento por categoria ── */
+.cat-orcamento {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--borda);
+}
+
+.cat-orcamento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--label);
+}
+
+.input-orcamento {
+  border: 1px solid var(--borda);
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 12px;
+  width: 80px;
+  background: var(--bg);
+  color: var(--texto);
+  text-align: right;
+  outline: none;
+}
+
+.input-orcamento:focus { border-color: var(--botao-bg); }
+
+.barra-orcamento {
+  background: var(--bg);
+  border-radius: 999px;
+  height: 5px;
+  overflow: hidden;
+}
+
+.barra-orcamento-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--botao-bg);
+  transition: width 0.3s;
+}
+
+.barra-orcamento-fill.excedido { background: #c0392b; }
+
+.cat-alerta-orcamento {
+  font-size: 11px;
+  color: #c0392b;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-largo { grid-column: span 1; }
+  .filtros-barra select, .filtros-barra input[type="date"] { font-size: 12px; }
+}

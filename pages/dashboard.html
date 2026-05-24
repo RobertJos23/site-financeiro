@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metas</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <script>if(localStorage.getItem('tema')==='dark')document.body.classList.add('dark')</script>
@@ -39,27 +40,41 @@
     </aside>
 
     <main>
-        <section class="formulario">
-            <h2>Nova Meta</h2>
-            <form id="form-meta">
-                <div class="campo">
-                    <label for="nome-meta">Nome</label>
-                    <input type="text" id="nome-meta" placeholder="Ex: Viagem para o nordeste">
-                </div>
-                <div class="campo">
-                    <label for="valor-meta">Valor Alvo (R$)</label>
-                    <input type="number" id="valor-meta" placeholder="0,00" min="0" step="0.01">
-                </div>
-                <button type="submit">Criar Meta</button>
-            </form>
+        <section class="resumo">
+            <div class="card receitas">
+                <h3>Receitas do Mês</h3>
+                <p id="dash-receitas">R$ 0,00</p>
+            </div>
+            <div class="card despesas">
+                <h3>Despesas do Mês</h3>
+                <p id="dash-despesas">R$ 0,00</p>
+            </div>
+            <div class="card saldo">
+                <h3>Saldo</h3>
+                <p id="dash-saldo">R$ 0,00</p>
+            </div>
         </section>
 
-        <section class="lista-metas">
-            <h2>Minhas Metas</h2>
-            <div id="lista-metas"></div>
-        </section>
+        <div class="dash-grid">
+            <div class="dash-card dash-largo">
+                <h3>Histórico dos Últimos 6 Meses</h3>
+                <canvas id="dash-grafico-historico"></canvas>
+            </div>
+            <div class="dash-card">
+                <h3>Top Gastos por Categoria</h3>
+                <div id="dash-categorias"></div>
+            </div>
+            <div class="dash-card">
+                <h3>Progresso das Metas</h3>
+                <div id="dash-metas"></div>
+            </div>
+            <div class="dash-card">
+                <h3>Contas Próximas</h3>
+                <div id="dash-contas"></div>
+            </div>
+        </div>
     </main>
 
-    <script src="../js/metas.js" type="module"></script>
+    <script src="../js/dashboard.js" type="module"></script>
 </body>
 </html>

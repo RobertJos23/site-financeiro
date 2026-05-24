@@ -110,6 +110,18 @@ async function lancarContasDoMes(uid, contas) {
     renderizarContas(contas, true)
 }
 
+function verificarContasProximas(contas) {
+    const diaHoje = new Date().getDate()
+    const proximas = contas.filter(function(c) {
+        const d = Number(c.dia)
+        return d >= diaHoje && d <= diaHoje + 3
+    })
+    if (proximas.length > 0) {
+        const nomes = proximas.map(function(c) { return `${c.nome} (dia ${c.dia})` }).join(', ')
+        setTimeout(function() { toast('Vencimento próximo: ' + nomes, 'aviso') }, 1200)
+    }
+}
+
 function iniciar(uid) {
     window._uid = uid
     let contasAtuais = []
@@ -124,6 +136,7 @@ function iniciar(uid) {
 
         if (!inicializado) {
             inicializado = true
+            verificarContasProximas(contasAtuais)
             if (!lancadoEsteMes && contasAtuais.length > 0) {
                 await lancarContasDoMes(uid, contasAtuais)
                 lancadoEsteMes = true

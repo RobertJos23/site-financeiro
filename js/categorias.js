@@ -47,12 +47,26 @@ async function salvarCategorias(uid, lista) {
     await setDoc(doc(db, 'usuarios', uid, 'dados', 'categorias'), { lista })
 }
 
+async function carregarOrcamentos(uid) {
+    const snap = await getDoc(doc(db, 'usuarios', uid, 'dados', 'orcamentos'))
+    return snap.exists() ? snap.data() : {}
+}
+
+async function salvarOrcamentos(uid, orcamentos) {
+    await setDoc(doc(db, 'usuarios', uid, 'dados', 'orcamentos'), orcamentos)
+}
+
 async function calcularTotalCategoria(uid, nome) {
+    const agora = new Date()
+    const mes = String(agora.getMonth() + 1).padStart(2, '0')
+    const ano = String(agora.getFullYear())
     const snap = await getDocs(collection(db, 'usuarios', uid, 'transacoes'))
     let total = 0
     snap.forEach(function(d) {
         const t = d.data()
-        if (t.categoria === nome) total += Number(t.valor)
+        if (t.categoria === nome && t.tipo === 'despesa' && t.data && t.data.startsWith(`${ano}-${mes}`)) {
+            total += Number(t.valor)
+        }
     })
     return total
 }
@@ -61,14 +75,32 @@ async function renderizarCategorias(uid) {
     const lista = document.getElementById('lista-categorias')
     lista.innerHTML = ''
     const categorias = await carregarCategorias(uid)
+    const orcamentos = await carregarOrcamentos(uid)
 
     for (const nome of categorias) {
         const total = await calcularTotalCategoria(uid, nome)
+        const limite = Number(orcamentos[nome] || 0)
+        const pct = limite > 0 ? Math.min(100, Math.round((total / limite) * 100)) : 0
+        const excedido = limite > 0 && total > limite
+
         const item = document.createElement('li')
         item.innerHTML = `
             <div class="item-descricao">${nome}</div>
-            <div class="item-total">R$ ${total.toFixed(2)} gastos</div>
-            <div class="item-direita">
+            <div class="item-total">R$ ${total.toFixed(2)} gastos este mês</div>
+            <div class="cat-orcamento">
+                <div class="cat-orcamento-header">
+                    <span>Orçamento mensal</span>
+                    <input type="number" class="input-orcamento" data-cat="${nome}"
+                        value="${limite > 0 ? limite.toFixed(2) : ''}" placeholder="R$ 0,00" min="0" step="0.01">
+                </div>
+                ${limite > 0 ? `
+                <div class="barra-orcamento">
+                    <div class="barra-orcamento-fill ${excedido ? 'excedido' : ''}" style="width: ${pct}%"></div>
+                </div>
+                ${excedido ? `<div class="cat-alerta-orcamento">⚠ Limite excedido por R$ ${(total - limite).toFixed(2)}</div>` : ''}
+                ` : ''}
+            </div>
+            <div class="item-direita" style="margin-top: 8px;">
                 ${categoriasPadrao.includes(nome)
                     ? '<span style="color: var(--label); font-size: 12px;">padrão</span>'
                     : `<button class="btn-excluir" data-nome="${nome}">×</button>`
@@ -77,6 +109,22 @@ async function renderizarCategorias(uid) {
         `
         lista.appendChild(item)
     }
+
+    document.querySelectorAll('.input-orcamento').forEach(function(input) {
+        input.addEventListener('change', async function() {
+            const cat = input.dataset.cat
+            const valor = Number(input.value) || 0
+            const orcamentosAtuais = await carregarOrcamentos(uid)
+            if (valor > 0) {
+                orcamentosAtuais[cat] = valor
+            } else {
+                delete orcamentosAtuais[cat]
+            }
+            await salvarOrcamentos(uid, orcamentosAtuais)
+            renderizarCategorias(uid)
+            toast('Orçamento salvo!')
+        })
+    })
 
     document.querySelectorAll('.btn-excluir').forEach(function(btn) {
         btn.addEventListener('click', async function() {

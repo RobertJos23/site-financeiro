@@ -7,6 +7,9 @@ import { esconderLoading, configurarHamburger, toast } from './utils.js'
 
 configurarHamburger()
 
+let todasTransacoes = []
+let filtros = { tipo: '', categoria: '', inicio: '', fim: '' }
+
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
         window.location.href = 'login.html'
@@ -35,17 +38,26 @@ if (localStorage.getItem('tema') === 'dark') {
     btnTema.textContent = 'Modo Claro'
 }
 
+function aplicarFiltros() {
+    let filtradas = todasTransacoes
+    if (filtros.tipo)      filtradas = filtradas.filter(function(t) { return t.tipo === filtros.tipo })
+    if (filtros.categoria) filtradas = filtradas.filter(function(t) { return t.categoria === filtros.categoria })
+    if (filtros.inicio)    filtradas = filtradas.filter(function(t) { return t.data >= filtros.inicio })
+    if (filtros.fim)       filtradas = filtradas.filter(function(t) { return t.data <= filtros.fim })
+    renderizarTransacoes(filtradas)
+}
+
 function iniciar(uid) {
     carregarSelectCategorias(uid)
 
     const q = query(collection(db, 'usuarios', uid, 'transacoes'))
     onSnapshot(q, function(snapshot) {
-        const transacoes = []
+        todasTransacoes = []
         snapshot.forEach(function(d) {
-            transacoes.push({ id: d.id, ...d.data() })
+            todasTransacoes.push({ id: d.id, ...d.data() })
         })
-        renderizarTransacoes(transacoes)
-        atualizarResumo(transacoes)
+        aplicarFiltros()
+        atualizarResumo(todasTransacoes)
     })
 
     const form = document.getElementById('form-transacao')
@@ -63,10 +75,34 @@ function iniciar(uid) {
         try {
             await addDoc(collection(db, 'usuarios', uid, 'transacoes'), transacao)
             form.reset()
-            toast('Transacao adicionada!')
+            toast('Transação adicionada!')
         } catch(e) {
             toast('Erro ao salvar transação.', 'erro')
         }
+    })
+
+    document.getElementById('filtro-tipo').addEventListener('change', function() {
+        filtros.tipo = this.value; aplicarFiltros()
+    })
+    document.getElementById('filtro-categoria-filtro').addEventListener('change', function() {
+        filtros.categoria = this.value; aplicarFiltros()
+    })
+    document.getElementById('filtro-data-inicio').addEventListener('change', function() {
+        filtros.inicio = this.value; aplicarFiltros()
+    })
+    document.getElementById('filtro-data-fim').addEventListener('change', function() {
+        filtros.fim = this.value; aplicarFiltros()
+    })
+    document.getElementById('btn-limpar-filtros').addEventListener('click', function() {
+        filtros = { tipo: '', categoria: '', inicio: '', fim: '' }
+        document.getElementById('filtro-tipo').value = ''
+        document.getElementById('filtro-categoria-filtro').value = ''
+        document.getElementById('filtro-data-inicio').value = ''
+        document.getElementById('filtro-data-fim').value = ''
+        aplicarFiltros()
+    })
+    document.getElementById('btn-exportar-csv').addEventListener('click', function() {
+        exportarCSV()
     })
 
     window._uid = uid
@@ -75,6 +111,11 @@ function iniciar(uid) {
 function renderizarTransacoes(transacoes) {
     const lista = document.getElementById('lista-transacoes')
     lista.innerHTML = ''
+
+    if (transacoes.length === 0) {
+        lista.innerHTML = '<li style="color: var(--label); padding: 12px 0; font-size: 14px;">Nenhuma transação encontrada.</li>'
+        return
+    }
 
     transacoes.forEach(function(t) {
         const item = document.createElement('li')
@@ -118,14 +159,41 @@ function atualizarResumo(transacoes) {
 
 async function carregarSelectCategorias(uid) {
     const select = document.getElementById('categoria')
+    const selectFiltro = document.getElementById('filtro-categoria-filtro')
     const ref = doc(db, 'usuarios', uid, 'dados', 'categorias')
     const snap = await getDoc(ref)
     const categorias = snap.exists() ? snap.data().lista : ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
+
     select.innerHTML = ''
+    selectFiltro.innerHTML = '<option value="">Todas as categorias</option>'
+
     categorias.forEach(function(nome) {
-        const option = document.createElement('option')
-        option.value = nome
-        option.textContent = nome.charAt(0).toUpperCase() + nome.slice(1)
-        select.appendChild(option)
+        const cap = nome.charAt(0).toUpperCase() + nome.slice(1)
+        const opt1 = document.createElement('option')
+        opt1.value = nome
+        opt1.textContent = cap
+        select.appendChild(opt1)
+
+        const opt2 = document.createElement('option')
+        opt2.value = nome
+        opt2.textContent = cap
+        selectFiltro.appendChild(opt2)
     })
+}
+
+function exportarCSV() {
+    if (todasTransacoes.length === 0) { toast('Nenhuma transação para exportar.', 'aviso'); return }
+    const linhas = [['Descrição', 'Categoria', 'Tipo', 'Data', 'Valor']]
+    todasTransacoes.forEach(function(t) {
+        linhas.push([`"${t.descricao}"`, t.categoria, t.tipo, t.data, Number(t.valor).toFixed(2)])
+    })
+    const csv = '﻿' + linhas.map(function(l) { return l.join(';') }).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'transacoes.csv'
+    a.click()
+    URL.revokeObjectURL(url)
+    toast('CSV exportado!')
 }
