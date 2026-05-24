@@ -55,7 +55,7 @@ formLogin.addEventListener('submit', async function(evento) {
     const erro  = document.getElementById('erro-login')
     try {
         await signInWithEmailAndPassword(auth, email, senha)
-        window.location.href = 'index.html'
+        window.location.href = 'pages/assistente.html'
     } catch(e) {
         erro.textContent = 'E-mail ou senha incorretos.'
     }
@@ -68,7 +68,7 @@ formCadastro.addEventListener('submit', async function(evento) {
     const erro  = document.getElementById('erro-cadastro')
     try {
         await createUserWithEmailAndPassword(auth, email, senha)
-        window.location.href = 'index.html'
+        window.location.href = 'pages/assistente.html'
     } catch(e) {
         if (e.code === 'auth/email-already-in-use') {
             erro.textContent = 'Este e-mail ja esta em uso.'
@@ -98,7 +98,7 @@ document.getElementById('btn-google').addEventListener('click', async function()
     const provider = new GoogleAuthProvider()
     try {
         await signInWithPopup(auth, provider)
-        window.location.href = 'index.html'
+        window.location.href = 'pages/assistente.html'
     } catch(e) {
         console.error('Erro login Google:', e)
     }

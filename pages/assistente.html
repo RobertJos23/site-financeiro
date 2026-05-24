@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metas</title>
+    <title>Assistente IA</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -28,27 +28,18 @@
     </header>
 
     <main>
-        <section class="formulario">
-            <h2>Nova Meta</h2>
-            <form id="form-meta">
-                <div class="campo">
-                    <label for="nome-meta">Nome</label>
-                    <input type="text" id="nome-meta" placeholder="Ex: Viagem para o nordeste">
-                </div>
-                <div class="campo">
-                    <label for="valor-meta">Valor Alvo (R$)</label>
-                    <input type="number" id="valor-meta" placeholder="0,00" min="0" step="0.01">
-                </div>
-                <button type="submit">Criar Meta</button>
+        <section class="chat-container">
+            <h2>Assistente Financeiro IA</h2>
+            <div id="area-mensagens" class="chat-mensagens">
+                <div class="msg msg-ia">Ola! Sou seu assistente financeiro. Posso responder perguntas sobre seus gastos, metas e investimentos. Como posso ajudar?</div>
+            </div>
+            <form id="form-chat" class="chat-form">
+                <input type="text" id="input-mensagem" placeholder="Pergunte algo sobre suas financas...">
+                <button type="submit" id="btn-enviar">Enviar</button>
             </form>
-        </section>
-
-        <section class="lista-metas">
-            <h2>Minhas Metas</h2>
-            <div id="lista-metas"></div>
         </section>
     </main>
 
-    <script src="../js/metas.js" type="module"></script>
+    <script src="../js/assistente.js" type="module"></script>
 </body>
 </html>
