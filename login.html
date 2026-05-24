@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header class="topbar" style="justify-content: center;">
-        <span class="topbar-titulo" style="position: static; transform: none;">Controle Financeiro</span>
+    <script>if(localStorage.getItem('tema')==='dark')document.body.classList.add('dark')</script>
+    <header class="topbar">
+        <span class="topbar-titulo">Controle Financeiro</span>
+        <div class="topbar-acoes">
+            <button id="btn-tema">Modo Escuro</button>
+        </div>
     </header>
 
     <main>

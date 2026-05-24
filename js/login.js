@@ -7,6 +7,18 @@ import {
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 
+const btnTema = document.getElementById('btn-tema')
+btnTema.addEventListener('click', function() {
+    document.body.classList.toggle('dark')
+    const escuro = document.body.classList.contains('dark')
+    btnTema.textContent = escuro ? 'Modo Claro' : 'Modo Escuro'
+    localStorage.setItem('tema', escuro ? 'dark' : 'light')
+})
+if (localStorage.getItem('tema') === 'dark') {
+    document.body.classList.add('dark')
+    btnTema.textContent = 'Modo Claro'
+}
+
 const abaLogin    = document.getElementById('aba-login')
 const abaCadastro = document.getElementById('aba-cadastro')
 const formLogin     = document.getElementById('form-login')
