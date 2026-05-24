@@ -984,11 +984,11 @@ body.dark .btn-logout:hover {
 }
 
 .msg {
-  max-width: 72%;
-  padding: 10px 14px;
+  max-width: 62%;
+  padding: 9px 13px;
   border-radius: 18px;
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
 }
