@@ -52,9 +52,14 @@ body {
     font-weight: 700;
     color: var(--botao-bg);
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    text-align: center;
     pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 120px;
 }
 
 .topbar-acoes {
@@ -913,7 +918,7 @@ body.dark .btn-logout:hover {
 /* ── Responsivo ── */
 @media (max-width: 768px) {
   .topbar { padding: 0 12px; }
-  .topbar-titulo { font-size: 15px; }
+  .topbar-titulo { font-size: 15px; padding: 0 100px; }
   main { padding: 16px; }
   .resumo { flex-direction: column; }
   .formulario { max-width: 100%; }
@@ -926,6 +931,13 @@ body.dark .btn-logout:hover {
   .painel-moedas { grid-template-columns: 1fr 1fr; }
   .inv-controles { flex-direction: column; align-items: flex-start; }
   .perfil-card { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .topbar { padding: 0 10px; }
+  .topbar-titulo { font-size: 14px; padding: 0 84px; }
+  #btn-tema { display: none; }
+  .btn-logout { padding: 5px 10px; font-size: 12px; }
 }
 
 /* ── Chat Assistente IA ── */
