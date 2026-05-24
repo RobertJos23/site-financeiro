@@ -1,4 +1,4 @@
-import { auth } from './firebase.js'
+﻿import { auth } from './firebase.js'
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
@@ -71,9 +71,9 @@ formCadastro.addEventListener('submit', async function(evento) {
         window.location.href = 'pages/assistente.html'
     } catch(e) {
         if (e.code === 'auth/email-already-in-use') {
-            erro.textContent = 'Este e-mail ja esta em uso.'
+            erro.textContent = 'Este e-mail já está em uso.'
         } else if (e.code === 'auth/weak-password') {
-            erro.textContent = 'A senha precisa ter no minimo 6 caracteres.'
+            erro.textContent = 'A senha precisa ter no mínimo 6 caracteres.'
         } else {
             erro.textContent = 'Erro ao criar conta. Tente novamente.'
         }
@@ -90,7 +90,7 @@ formRecuperar.addEventListener('submit', async function(evento) {
         msg.textContent = 'Link enviado! Verifique seu e-mail.'
     } catch(e) {
         msg.style.color = '#c0392b'
-        msg.textContent = 'E-mail nao encontrado.'
+        msg.textContent = 'E-mail não encontrado.'
     }
 })
 

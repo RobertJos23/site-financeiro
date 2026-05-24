@@ -65,7 +65,7 @@ function iniciar(uid) {
             form.reset()
             toast('Transacao adicionada!')
         } catch(e) {
-            toast('Erro ao salvar transacao.', 'erro')
+            toast('Erro ao salvar transação.', 'erro')
         }
     })
 

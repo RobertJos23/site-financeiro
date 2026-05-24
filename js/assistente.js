@@ -1,4 +1,4 @@
-import { auth, db } from '../js/firebase.js'
+﻿import { auth, db } from '../js/firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import {
     collection, getDocs, doc, getDoc
@@ -72,7 +72,7 @@ async function carregarDados(uid) {
         .filter(function(t) { return t.tipo === 'despesa' })
         .reduce(function(s, t) { return s + Number(t.valor) }, 0)
 
-    contextoUsuario = `Voce e um assistente financeiro pessoal. Responda sempre em portugues, de forma clara e objetiva.
+    contextoUsuario = `Você é um assistente financeiro pessoal. Responda sempre em português, de forma clara e objetiva.
 
 Dados financeiros do usuario:
 
@@ -86,7 +86,7 @@ ${transacoes.length > 0
     ? transacoes.slice(-30).map(function(t) {
         return '- ' + t.descricao + ': R$ ' + Number(t.valor).toFixed(2) + ' (' + t.tipo + ', ' + t.categoria + ', ' + t.data + ')'
       }).join('\n')
-    : 'Nenhuma transacao registrada.'}
+    : 'Nenhuma transação registrada.'}
 
 CATEGORIAS: ${categorias.length > 0 ? categorias.join(', ') : 'Nenhuma categoria cadastrada.'}
 
@@ -104,7 +104,7 @@ ${contas.length > 0
       }).join('\n')
     : 'Nenhuma conta fixa cadastrada.'}
 
-Com base nesses dados, responda perguntas sobre as financas do usuario e tambem sobre investimentos e moedas.`
+Com base nesses dados, responda perguntas sobre as finanças do usuário e também sobre investimentos e moedas.`
 }
 
 function configurarChat() {

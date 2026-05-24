@@ -1,4 +1,4 @@
-import { auth, db } from './firebase.js'
+﻿import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import {
     collection, addDoc, deleteDoc, doc, onSnapshot, getDoc, setDoc
@@ -53,7 +53,7 @@ function renderizarContas(contas, jaLancado) {
 
     const btnLancar = document.getElementById('btn-lancar')
     if (jaLancado) {
-        btnLancar.textContent = 'Ja lancado este mes'
+        btnLancar.textContent = 'Já lançado este mês'
         btnLancar.disabled = true
         btnLancar.style.opacity = '0.5'
     } else {
@@ -127,7 +127,7 @@ function iniciar(uid) {
             if (!lancadoEsteMes && contasAtuais.length > 0) {
                 await lancarContasDoMes(uid, contasAtuais)
                 lancadoEsteMes = true
-                toast('Contas fixas lancadas automaticamente!')
+                toast('Contas fixas lançadas automaticamente!')
             }
         }
     })
@@ -136,7 +136,7 @@ function iniciar(uid) {
         if (contasAtuais.length === 0) { toast('Nenhuma conta fixa cadastrada.', 'aviso'); return }
         await lancarContasDoMes(uid, contasAtuais)
         lancadoEsteMes = true
-        toast('Contas lancadas!')
+        toast('Contas lançadas!')
     })
 
     document.getElementById('form-conta').addEventListener('submit', async function(evento) {

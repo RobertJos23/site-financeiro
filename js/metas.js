@@ -1,4 +1,4 @@
-import { auth, db } from './firebase.js'
+﻿import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import {
     collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot
@@ -99,7 +99,7 @@ function renderizarMetas(metas, uid) {
                 data: dataHoje
             })
 
-            toast('Deposito realizado e registrado nas transacoes!')
+            toast('Depósito realizado e registrado nas transações!')
         })
     })
 }
