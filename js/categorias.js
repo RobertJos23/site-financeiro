@@ -1,4 +1,4 @@
-﻿import { auth, db } from './firebase.js'
+import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import {
     doc, getDoc, setDoc, collection, getDocs
@@ -18,15 +18,15 @@ onAuthStateChanged(auth, function(usuario) {
     }
 })
 
-document.getslementById('btn-logout').addsventListener('click', function() {
+document.getElementById('btn-logout').addEventListener('click', function() {
     signOut(auth).then(function() { window.location.href = '../login.html' })
 })
 
-const btnTema = document.getslementById('btn-tema')
-btnTema.addsventListener('click', function() {
+const btnTema = document.getElementById('btn-tema')
+btnTema.addEventListener('click', function() {
     document.body.classList.toggle('dark')
     const escuro = document.body.classList.contains('dark')
-    btnTema.textContent = escuro ? 'Modo Claro' : 'Modo sscuro'
+    btnTema.textContent = escuro ? 'Modo Claro' : 'Modo Escuro'
     localStorage.setItem('tema', escuro ? 'dark' : 'light')
 })
 
@@ -50,7 +50,7 @@ async function salvarCategorias(uid, lista) {
 async function calcularTotalCategoria(uid, nome) {
     const snap = await getDocs(collection(db, 'usuarios', uid, 'transacoes'))
     let total = 0
-    snap.forsach(function(d) {
+    snap.forEach(function(d) {
         const t = d.data()
         if (t.categoria === nome) total += Number(t.valor)
     })
@@ -58,19 +58,19 @@ async function calcularTotalCategoria(uid, nome) {
 }
 
 async function renderizarCategorias(uid) {
-    const lista = document.getslementById('lista-categorias')
+    const lista = document.getElementById('lista-categorias')
     lista.innerHTML = ''
     const categorias = await carregarCategorias(uid)
 
     for (const nome of categorias) {
         const total = await calcularTotalCategoria(uid, nome)
-        const item = document.createslement('li')
+        const item = document.createElement('li')
         item.innerHTML = `
             <div class="item-descricao">${nome}</div>
             <div class="item-total">R$ ${total.toFixed(2)} gastos</div>
             <div class="item-direita">
                 ${categoriasPadrao.includes(nome)
-                    ? '<span style="color: var(--label); font-size: 12px;">padrao</span>'
+                    ? '<span style="color: var(--label); font-size: 12px;">padrão</span>'
                     : `<button class="btn-excluir" data-nome="${nome}">×</button>`
                 }
             </div>
@@ -78,8 +78,8 @@ async function renderizarCategorias(uid) {
         lista.appendChild(item)
     }
 
-    document.querySelectorAll('.btn-excluir').forsach(function(btn) {
-        btn.addsventListener('click', async function() {
+    document.querySelectorAll('.btn-excluir').forEach(function(btn) {
+        btn.addEventListener('click', async function() {
             const nome = btn.dataset.nome
             const cats = await carregarCategorias(uid)
             await salvarCategorias(uid, cats.filter(function(c) { return c !== nome }))
@@ -91,14 +91,14 @@ async function renderizarCategorias(uid) {
 function iniciar(uid) {
     renderizarCategorias(uid)
 
-    document.getslementById('form-categoria').addsventListener('submit', async function(evento) {
+    document.getElementById('form-categoria').addEventListener('submit', async function(evento) {
         evento.preventDefault()
-        const input = document.getslementById('nome-categoria')
+        const input = document.getElementById('nome-categoria')
         const nome = input.value.trim().toLowerCase()
         if (!nome) return
 
         const cats = await carregarCategorias(uid)
-        if (cats.includes(nome)) { toast('sssa categoria ja existe!', 'aviso'); return }
+        if (cats.includes(nome)) { toast('Essa categoria já existe!', 'aviso'); return }
 
         cats.push(nome)
         await salvarCategorias(uid, cats)
