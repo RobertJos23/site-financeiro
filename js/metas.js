@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-import { esconderLoading, configurarHamburger } from './utils.js'
+import { esconderLoading, configurarHamburger, toast } from './utils.js'
 
 configurarHamburger()
 
@@ -85,7 +85,21 @@ function renderizarMetas(metas, uid) {
             const valor = Number(btn.previousElementSibling.value)
             if (!valor || valor <= 0) return
             const novoGuardado = Number(btn.dataset.guardado) + valor
+            const nomeMeta = btn.closest('.meta-card').querySelector('.item-descricao').textContent
+
             await updateDoc(doc(db, 'usuarios', uid, 'metas', btn.dataset.id), { guardado: novoGuardado })
+
+            const hoje = new Date()
+            const dataHoje = hoje.toISOString().split('T')[0]
+            await addDoc(collection(db, 'usuarios', uid, 'transacoes'), {
+                descricao: 'Meta: ' + nomeMeta,
+                valor: String(valor),
+                tipo: 'despesa',
+                categoria: 'metas',
+                data: dataHoje
+            })
+
+            toast('Deposito realizado e registrado nas transacoes!')
         })
     })
 }

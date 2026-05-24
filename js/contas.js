@@ -113,17 +113,30 @@ async function lancarContasDoMes(uid, contas) {
 function iniciar(uid) {
     window._uid = uid
     let contasAtuais = []
+    let lancadoEsteMes = false
+    let inicializado = false
 
     onSnapshot(collection(db, 'usuarios', uid, 'contas'), async function(snapshot) {
         contasAtuais = []
         snapshot.forEach(function(d) { contasAtuais.push({ id: d.id, ...d.data() }) })
-        const jaLancado = await verificarLancamento(uid)
-        renderizarContas(contasAtuais, jaLancado)
+        lancadoEsteMes = await verificarLancamento(uid)
+        renderizarContas(contasAtuais, lancadoEsteMes)
+
+        if (!inicializado) {
+            inicializado = true
+            if (!lancadoEsteMes && contasAtuais.length > 0) {
+                await lancarContasDoMes(uid, contasAtuais)
+                lancadoEsteMes = true
+                toast('Contas fixas lancadas automaticamente!')
+            }
+        }
     })
 
     document.getElementById('btn-lancar').addEventListener('click', async function() {
         if (contasAtuais.length === 0) { toast('Nenhuma conta fixa cadastrada.', 'aviso'); return }
         await lancarContasDoMes(uid, contasAtuais)
+        lancadoEsteMes = true
+        toast('Contas lancadas!')
     })
 
     document.getElementById('form-conta').addEventListener('submit', async function(evento) {
@@ -132,7 +145,20 @@ function iniciar(uid) {
         const valor = document.getElementById('valor-conta').value
         const dia = document.getElementById('dia-conta').value
         if (!nome || !valor || !dia) return
+
         await addDoc(collection(db, 'usuarios', uid, 'contas'), { nome, valor, dia })
+
+        if (lancadoEsteMes) {
+            await addDoc(collection(db, 'usuarios', uid, 'transacoes'), {
+                descricao: nome,
+                valor: valor,
+                tipo: 'despesa',
+                categoria: 'contas fixas',
+                data: `${anoAtual}-${mesAtual}-${String(dia).padStart(2, '0')}`
+            })
+        }
+
         document.getElementById('form-conta').reset()
+        toast('Conta adicionada!')
     })
 }
