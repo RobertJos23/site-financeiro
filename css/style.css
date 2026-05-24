@@ -435,14 +435,24 @@ button[type="submit"]:hover {
 
 #lista-transacoes li {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid var(--bg);
 }
 
 #lista-transacoes li:last-child {
   border-bottom: none;
+}
+
+#lista-transacoes li > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+#lista-transacoes .item-direita {
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 .item-descricao {
