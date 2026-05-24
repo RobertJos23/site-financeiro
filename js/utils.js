@@ -21,25 +21,23 @@ export function toast(mensagem, tipo) {
 }
 
 export function configurarHamburger() {
-    const btn = document.getElementById('btn-menu')
-    const nav = document.querySelector('nav')
-    if (!btn || !nav) return
+    const btnMenu = document.getElementById('btn-menu')
+    const sidebar = document.getElementById('sidebar')
+    const overlay = document.getElementById('sidebar-overlay')
+    const btnFechar = document.getElementById('btn-fechar-sidebar')
+    if (!btnMenu || !sidebar) return
 
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation()
-        nav.classList.toggle('aberta')
-        btn.textContent = nav.classList.contains('aberta') ? '✕' : '☰'
-    })
+    function abrirSidebar() {
+        sidebar.classList.add('aberta')
+        if (overlay) overlay.classList.add('visivel')
+    }
 
-    nav.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', function() {
-            nav.classList.remove('aberta')
-            btn.textContent = '☰'
-        })
-    })
+    function fecharSidebar() {
+        sidebar.classList.remove('aberta')
+        if (overlay) overlay.classList.remove('visivel')
+    }
 
-    document.addEventListener('click', function() {
-        nav.classList.remove('aberta')
-        btn.textContent = '☰'
-    })
+    btnMenu.addEventListener('click', abrirSidebar)
+    if (btnFechar) btnFechar.addEventListener('click', fecharSidebar)
+    if (overlay) overlay.addEventListener('click', fecharSidebar)
 }

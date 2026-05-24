@@ -9,24 +9,33 @@
 </head>
 <body>
     <div id="loading" class="loading-overlay"><div class="spinner"></div></div>
-    <header>
-        <h1>Controle Financeiro</h1>
-        <div style="display: flex; align-items: center;">
-            <button id="btn-menu" class="btn-menu">&#9776;</button>
-            <nav>
-                <a href="assistente.html">Assistente IA</a>
-                <a href="../index.html">Transacoes</a>
-                <a href="categorias.html">Categorias</a>
-                <a href="contas.html">Contas</a>
-                <a href="metas.html">Metas</a>
-                <a href="relatorios.html">Relatorios</a>
-                <a href="investimentos.html">Investimentos</a>
-                <a href="perfil.html">Perfil</a>
-            </nav>
+
+    <header class="topbar">
+        <button id="btn-menu" class="btn-menu">&#9776;</button>
+        <span class="topbar-titulo">Controle Financeiro</span>
+        <div class="topbar-acoes">
             <button id="btn-tema">Modo Escuro</button>
             <button class="btn-logout" id="btn-logout">Sair</button>
         </div>
     </header>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Controle Financeiro</span>
+            <button id="btn-fechar-sidebar" class="btn-fechar-sidebar">&#10005;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="assistente.html">Assistente IA</a>
+            <a href="../index.html">Transacoes</a>
+            <a href="categorias.html">Categorias</a>
+            <a href="contas.html">Contas</a>
+            <a href="metas.html">Metas</a>
+            <a href="relatorios.html">Relatorios</a>
+            <a href="investimentos.html">Investimentos</a>
+            <a href="perfil.html">Perfil</a>
+        </nav>
+    </aside>
 
     <main>
         <section class="filtro-relatorio">
