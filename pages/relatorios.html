@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#16A34A">
     <title>Relatórios</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="manifest" href="../manifest.json">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -84,6 +86,11 @@
                 <h3>Histórico dos Últimos 6 Meses</h3>
                 <canvas id="grafico-historico-mensal"></canvas>
             </div>
+        </section>
+
+        <section class="lista" style="max-width: 100%; margin-top: 32px;">
+            <h2>Comparação com mês anterior</h2>
+            <div id="comparacao-container"></div>
         </section>
 
         <section class="lista" style="max-width: 100%; margin-top: 32px;">

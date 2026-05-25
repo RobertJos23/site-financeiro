@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     collection, addDoc, deleteDoc, doc, onSnapshot, getDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-import { esconderLoading, configurarHamburger, toast } from './utils.js'
+import { esconderLoading, configurarHamburger, toast, confirmarAcao } from './utils.js'
 
 configurarHamburger()
 
@@ -81,6 +81,8 @@ function renderizarContas(contas, jaLancado) {
 
     document.querySelectorAll('.btn-excluir').forEach(function(btn) {
         btn.addEventListener('click', async function() {
+            const ok = await confirmarAcao('Excluir esta conta fixa?')
+            if (!ok) return
             await deleteDoc(doc(db, 'usuarios', window._uid, 'contas', btn.dataset.id))
         })
     })

@@ -127,6 +127,49 @@ function renderizarHistoricoMensal(todasTransacoes) {
     })
 }
 
+function renderizarComparacao(transacoesMes, todasTransacoes, mes, ano) {
+    const container = document.getElementById('comparacao-container')
+    if (!container) return
+
+    const mesAtual = new Date(Number(ano), Number(mes) - 1, 1)
+    const mesAnterior = new Date(mesAtual.getFullYear(), mesAtual.getMonth() - 1, 1)
+    const mesAntKey = `${mesAnterior.getFullYear()}-${String(mesAnterior.getMonth() + 1).padStart(2, '0')}`
+    const transacoesAnt = todasTransacoes.filter(function(t) { return t.data && t.data.startsWith(mesAntKey) })
+
+    function calcular(lista) {
+        const rec = lista.filter(function(t) { return t.tipo === 'receita' }).reduce(function(s, t) { return s + Number(t.valor) }, 0)
+        const desp = lista.filter(function(t) { return t.tipo === 'despesa' }).reduce(function(s, t) { return s + Number(t.valor) }, 0)
+        return { receitas: rec, despesas: desp, saldo: rec - desp }
+    }
+
+    const atual = calcular(transacoesMes)
+    const anterior = calcular(transacoesAnt)
+
+    const mesesNome = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+    const nomeMesAtual = mesesNome[mesAtual.getMonth()]
+    const nomeMesAnt = mesesNome[mesAnterior.getMonth()]
+
+    function bloco(titulo, a, b) {
+        const d = a - b
+        const cls = d >= 0 ? 'diff-positivo' : 'diff-negativo'
+        const sinal = d >= 0 ? '+' : ''
+        return `
+            <div class="comparacao-item">
+                <div class="comparacao-label">${titulo}</div>
+                <div class="comparacao-valor">R$ ${a.toFixed(2)}</div>
+                <div class="comparacao-label" style="margin-top:4px;">${nomeMesAnt}: R$ ${b.toFixed(2)}</div>
+                <div class="comparacao-diff ${cls}">${sinal}R$ ${d.toFixed(2)}</div>
+            </div>`
+    }
+
+    container.innerHTML = `
+        <div class="comparacao-grid">
+            ${bloco('Receitas', atual.receitas, anterior.receitas)}
+            ${bloco('Despesas', atual.despesas, anterior.despesas)}
+            ${bloco('Saldo', atual.saldo, anterior.saldo)}
+        </div>`
+}
+
 async function atualizar(uid) {
     const mes = document.getElementById('filtro-mes').value
     const ano = document.getElementById('filtro-ano').value
@@ -150,6 +193,7 @@ async function atualizar(uid) {
     renderizarGraficoMetas(metas)
     renderizarHistoricoMensal(todasTransacoes)
     renderizarTabela(transacoes)
+    renderizarComparacao(transacoes, todasTransacoes, mes, ano)
 }
 
 function iniciar(uid) {

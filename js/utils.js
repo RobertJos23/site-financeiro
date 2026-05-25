@@ -1,3 +1,8 @@
+if ('serviceWorker' in navigator) {
+    const base = window.location.pathname.includes('/pages/') ? '../sw.js' : 'sw.js'
+    navigator.serviceWorker.register(base).catch(function() {})
+}
+
 export function esconderLoading() {
     const el = document.getElementById('loading')
     if (!el) return
@@ -40,4 +45,43 @@ export function configurarHamburger() {
     btnMenu.addEventListener('click', abrirSidebar)
     if (btnFechar) btnFechar.addEventListener('click', fecharSidebar)
     if (overlay) overlay.addEventListener('click', fecharSidebar)
+
+    ativarLinkAtual()
+}
+
+export function ativarLinkAtual() {
+    const atual = window.location.pathname.split('/').pop() || 'index.html'
+    document.querySelectorAll('.sidebar-nav a').forEach(function(a) {
+        if (a.getAttribute('href').split('/').pop() === atual) {
+            a.classList.add('ativa')
+        }
+    })
+}
+
+export function confirmarAcao(mensagem) {
+    return new Promise(function(resolve) {
+        const overlay = document.createElement('div')
+        overlay.className = 'confirm-overlay'
+        overlay.innerHTML = `
+            <div class="confirm-box">
+                <p class="confirm-msg">${mensagem}</p>
+                <div class="confirm-btns">
+                    <button class="confirm-cancelar">Cancelar</button>
+                    <button class="confirm-ok">Excluir</button>
+                </div>
+            </div>
+        `
+        document.body.appendChild(overlay)
+        requestAnimationFrame(function() { overlay.classList.add('visivel') })
+
+        overlay.querySelector('.confirm-ok').addEventListener('click', function() {
+            overlay.remove(); resolve(true)
+        })
+        overlay.querySelector('.confirm-cancelar').addEventListener('click', function() {
+            overlay.remove(); resolve(false)
+        })
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) { overlay.remove(); resolve(false) }
+        })
+    })
 }

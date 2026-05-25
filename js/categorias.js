@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     doc, getDoc, setDoc, collection, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-import { esconderLoading, configurarHamburger, toast } from './utils.js'
+import { esconderLoading, configurarHamburger, toast, confirmarAcao } from './utils.js'
 
 const categoriasPadrao = ['alimentacao', 'transporte', 'lazer', 'saude', 'outros']
 
@@ -128,6 +128,8 @@ async function renderizarCategorias(uid) {
 
     document.querySelectorAll('.btn-excluir').forEach(function(btn) {
         btn.addEventListener('click', async function() {
+            const ok = await confirmarAcao('Excluir esta categoria?')
+            if (!ok) return
             const nome = btn.dataset.nome
             const cats = await carregarCategorias(uid)
             await salvarCategorias(uid, cats.filter(function(c) { return c !== nome }))

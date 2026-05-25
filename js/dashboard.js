@@ -1,6 +1,6 @@
 import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+import { collection, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
 import { esconderLoading, configurarHamburger } from './utils.js'
 
 configurarHamburger()
@@ -65,6 +65,7 @@ async function carregarDashboard(uid) {
 
     renderizarTopCategorias(transacoesMes)
     renderizarHistorico(todasTransacoes)
+    await verificarLimite(uid, despesas)
 
     const snapM = await getDocs(collection(db, 'usuarios', uid, 'metas'))
     const metas = []
@@ -75,6 +76,20 @@ async function carregarDashboard(uid) {
     const contas = []
     snapC.forEach(function(d) { contas.push(d.data()) })
     renderizarContasProximas(contas, agora)
+}
+
+async function verificarLimite(uid, despesas) {
+    const snap = await getDoc(doc(db, 'usuarios', uid, 'dados', 'configuracoes'))
+    if (!snap.exists()) return
+    const limite = Number(snap.data().limiteMensal || 0)
+    if (!limite) return
+    const banner = document.getElementById('limite-banner')
+    if (despesas > limite) {
+        banner.style.display = 'flex'
+        banner.textContent = `⚠ Limite mensal excedido! Despesas: R$ ${despesas.toFixed(2)} / Limite: R$ ${limite.toFixed(2)}`
+    } else {
+        banner.style.display = 'none'
+    }
 }
 
 function renderizarTopCategorias(transacoes) {

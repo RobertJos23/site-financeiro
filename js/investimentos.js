@@ -1,7 +1,7 @@
 import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-import { esconderLoading, configurarHamburger } from './utils.js'
+import { esconderLoading, configurarHamburger, confirmarAcao } from './utils.js'
 
 const MOEDAS_DISPONIVEIS = [
     { id: 'USD-BRL', nome: 'Dólar Americano', simbolo: 'USD', tipo: 'forex' },
@@ -195,6 +195,8 @@ function renderizarPainel(moedaIds, precos) {
 
     document.querySelectorAll('.btn-excluir').forEach(function(btn) {
         btn.addEventListener('click', async function() {
+            const ok = await confirmarAcao('Remover esta moeda do painel?')
+            if (!ok) return
             const pref = await carregarPreferencias()
             const novas = pref.moedas.filter(function(m) { return m !== btn.dataset.id })
             await salvarPreferencias(novas, pref.intervalo)

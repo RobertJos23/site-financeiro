@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import {
     collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-import { esconderLoading, configurarHamburger, toast } from './utils.js'
+import { esconderLoading, configurarHamburger, toast, confirmarAcao } from './utils.js'
 
 configurarHamburger()
 
@@ -76,6 +76,8 @@ function renderizarMetas(metas, uid) {
 
     document.querySelectorAll('.btn-excluir').forEach(function(btn) {
         btn.addEventListener('click', async function() {
+            const ok = await confirmarAcao('Excluir esta meta?')
+            if (!ok) return
             await deleteDoc(doc(db, 'usuarios', uid, 'metas', btn.dataset.id))
         })
     })

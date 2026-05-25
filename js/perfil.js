@@ -1,8 +1,11 @@
-import { auth } from './firebase.js'
+import { auth, db } from './firebase.js'
 import {
     onAuthStateChanged, signOut, updateProfile,
     updatePassword, reauthenticateWithCredential, EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
+import {
+    doc, getDoc, setDoc, collection, getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
 import { esconderLoading, configurarHamburger, toast } from './utils.js'
 
 const btnTema = document.getElementById('btn-tema')
@@ -32,6 +35,8 @@ onAuthStateChanged(auth, function(usuario) {
     preencherPerfil(usuario)
     configurarFormNome(usuario)
     configurarFormSenha(usuario)
+    configurarLimite(usuario.uid)
+    configurarBackup(usuario.uid)
 })
 
 function preencherPerfil(usuario) {
@@ -104,6 +109,63 @@ function configurarFormSenha(usuario) {
             } else {
                 toast('Erro ao alterar senha.', 'erro')
             }
+        }
+    })
+}
+
+async function configurarLimite(uid) {
+    const ref = doc(db, 'usuarios', uid, 'dados', 'configuracoes')
+    const snap = await getDoc(ref)
+    const limite = snap.exists() ? (snap.data().limiteMensal || '') : ''
+    document.getElementById('input-limite').value = limite
+
+    document.getElementById('form-limite').addEventListener('submit', async function(e) {
+        e.preventDefault()
+        const valor = Number(document.getElementById('input-limite').value) || 0
+        await setDoc(ref, { limiteMensal: valor }, { merge: true })
+        toast('Limite mensal salvo!')
+    })
+}
+
+async function configurarBackup(uid) {
+    document.getElementById('btn-backup').addEventListener('click', async function() {
+        try {
+            const backup = {}
+
+            const snapT = await getDocs(collection(db, 'usuarios', uid, 'transacoes'))
+            backup.transacoes = []
+            snapT.forEach(function(d) { backup.transacoes.push({ id: d.id, ...d.data() }) })
+
+            const snapM = await getDocs(collection(db, 'usuarios', uid, 'metas'))
+            backup.metas = []
+            snapM.forEach(function(d) { backup.metas.push({ id: d.id, ...d.data() }) })
+
+            const snapC = await getDocs(collection(db, 'usuarios', uid, 'contas'))
+            backup.contas = []
+            snapC.forEach(function(d) { backup.contas.push({ id: d.id, ...d.data() }) })
+
+            const docsCategorias = await getDoc(doc(db, 'usuarios', uid, 'dados', 'categorias'))
+            backup.categorias = docsCategorias.exists() ? docsCategorias.data() : {}
+
+            const docsOrcamentos = await getDoc(doc(db, 'usuarios', uid, 'dados', 'orcamentos'))
+            backup.orcamentos = docsOrcamentos.exists() ? docsOrcamentos.data() : {}
+
+            const docsConfig = await getDoc(doc(db, 'usuarios', uid, 'dados', 'configuracoes'))
+            backup.configuracoes = docsConfig.exists() ? docsConfig.data() : {}
+
+            backup.exportadoEm = new Date().toISOString()
+
+            const json = JSON.stringify(backup, null, 2)
+            const blob = new Blob([json], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `backup-financeiro-${new Date().toISOString().split('T')[0]}.json`
+            a.click()
+            URL.revokeObjectURL(url)
+            toast('Backup exportado com sucesso!')
+        } catch(err) {
+            toast('Erro ao exportar backup.', 'erro')
         }
     })
 }

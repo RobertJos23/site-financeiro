@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#16A34A">
     <title>Perfil</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="manifest" href="../manifest.json">
 </head>
 <body>
     <script>if(localStorage.getItem('tema')==='dark')document.body.classList.add('dark')</script>
@@ -72,6 +74,24 @@
                     </div>
                     <button type="submit">Alterar senha</button>
                 </form>
+            </div>
+
+            <div class="perfil-secao">
+                <h3>Limite de gastos mensal</h3>
+                <p style="color: var(--label); font-size: 13px; margin-bottom: 12px;">Um aviso aparecerá na tela de transações quando suas despesas ultrapassarem este valor.</p>
+                <form id="form-limite">
+                    <div class="campo">
+                        <label for="input-limite">Limite mensal (R$)</label>
+                        <input type="number" id="input-limite" placeholder="Ex: 3000" min="0" step="0.01">
+                    </div>
+                    <button type="submit">Salvar limite</button>
+                </form>
+            </div>
+
+            <div class="perfil-secao">
+                <h3>Backup dos dados</h3>
+                <p style="color: var(--label); font-size: 13px; margin-bottom: 12px;">Exporta todas as suas transações, metas, contas e configurações em um arquivo JSON.</p>
+                <button id="btn-backup" class="btn-exportar">⬇ Exportar backup</button>
             </div>
         </div>
     </main>

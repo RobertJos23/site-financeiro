@@ -868,6 +868,14 @@ body.dark .btn-logout:hover {
     color: var(--botao-bg);
 }
 
+.sidebar-nav a.ativa {
+    background: var(--bg);
+    color: var(--botao-bg);
+    font-weight: 700;
+    border-left: 3px solid var(--botao-bg);
+    padding-left: 13px;
+}
+
 /* ── Perfil ── */
 .perfil-card {
   background: var(--card-bg);
@@ -1259,4 +1267,151 @@ body.dark .dash-conta-item.urgente {
   .dash-grid { grid-template-columns: 1fr; }
   .dash-largo { grid-column: span 1; }
   .filtros-barra select, .filtros-barra input[type="date"] { font-size: 12px; }
+}
+
+/* ── Confirmação de exclusão ── */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.5);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  backdrop-filter: blur(2px);
+}
+
+.confirm-overlay.visivel { opacity: 1; }
+
+.confirm-box {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px 28px;
+  max-width: 320px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.confirm-msg {
+  font-size: 15px;
+  margin-bottom: 20px;
+  color: var(--texto);
+  text-align: center;
+}
+
+.confirm-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.confirm-cancelar {
+  background: transparent;
+  border: 1px solid var(--borda);
+  color: var(--texto);
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirm-cancelar:hover { background: var(--bg); }
+
+.confirm-ok {
+  background: #c0392b;
+  border: none;
+  color: white;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirm-ok:hover { background: #922b21; }
+
+/* ── Animação de entrada nas barras ── */
+@keyframes barraEntrar {
+  from { width: 0 !important; }
+}
+
+.barra-progresso, .barra-orcamento-fill {
+  animation: barraEntrar 0.6s ease-out;
+}
+
+/* ── Badge recorrente ── */
+.badge-recorrente {
+  font-size: 11px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+
+body.dark .badge-recorrente {
+  background: rgba(59,130,246,0.2);
+  color: #93c5fd;
+}
+
+/* ── Comparação de meses ── */
+.comparacao-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.comparacao-item {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.comparacao-label { font-size: 12px; color: var(--label); margin-bottom: 6px; }
+.comparacao-valor { font-size: 16px; font-weight: bold; }
+.comparacao-diff { font-size: 12px; margin-top: 4px; }
+.diff-positivo { color: #2d6a4f; }
+.diff-negativo { color: #c0392b; }
+
+/* ── Limite mensal banner ── */
+.limite-banner {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #991b1b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body.dark .limite-banner {
+  background: rgba(220,38,38,0.12);
+  border-color: rgba(220,38,38,0.3);
+  color: #fca5a5;
+}
+
+/* ── Campo checkbox ── */
+.campo-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.campo-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--botao-bg);
+  cursor: pointer;
 }

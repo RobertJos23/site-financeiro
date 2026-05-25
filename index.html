@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#16A34A">
     <title>Meu Site Financeiro</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <script>if(localStorage.getItem('tema')==='dark')document.body.classList.add('dark')</script>
@@ -39,6 +41,7 @@
     </aside>
 
     <main>
+        <div id="limite-banner" class="limite-banner" style="display:none;"></div>
         <section class="resumo">
             <div class="card receitas">
                 <h3>Receitas</h3>
@@ -92,6 +95,10 @@
                     <input type="date" id="data">
                 </div>
 
+                <div class="campo campo-check">
+                    <label><input type="checkbox" id="recorrente"> Transação recorrente (lançar todo mês)</label>
+                </div>
+
                 <button type="submit">Adicionar</button>
 
             </form>
@@ -110,6 +117,7 @@
                 </select>
                 <input type="date" id="filtro-data-inicio" title="Data início">
                 <input type="date" id="filtro-data-fim" title="Data fim">
+                <input type="text" id="filtro-busca" placeholder="Buscar descrição...">
                 <button class="btn-limpar" id="btn-limpar-filtros">Limpar</button>
                 <button class="btn-exportar" id="btn-exportar-csv">⬇ Exportar CSV</button>
             </div>
