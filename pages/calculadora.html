@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#16A34A">
+    <title>Calculadora Financeira</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="manifest" href="../manifest.json">
+</head>
+<body>
+    <script>if(localStorage.getItem('tema')==='dark')document.body.classList.add('dark')</script>
+    <div id="loading" class="loading-overlay"><div class="spinner"></div></div>
+
+    <header class="topbar">
+        <button id="btn-menu" class="btn-menu">&#9776;</button>
+        <span class="topbar-titulo">Controle Financeiro</span>
+        <div class="topbar-acoes">
+            <button id="btn-tema">Modo Escuro</button>
+            <button class="btn-logout" id="btn-logout">Sair</button>
+        </div>
+    </header>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Controle Financeiro</span>
+            <button id="btn-fechar-sidebar" class="btn-fechar-sidebar">&#10005;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="assistente.html">Assistente IA</a>
+            <a href="../index.html">Transações</a>
+            <a href="categorias.html">Categorias</a>
+            <a href="carteiras.html">Carteiras</a>
+            <a href="contas.html">Contas</a>
+            <a href="metas.html">Metas</a>
+            <a href="relatorios.html">Relatórios</a>
+            <a href="investimentos.html">Investimentos</a>
+            <a href="calculadora.html">Calculadora</a>
+            <a href="perfil.html">Perfil</a>
+        </nav>
+    </aside>
+
+    <main>
+        <h2 style="margin-bottom: 20px;">Calculadora Financeira</h2>
+
+        <div class="calc-tabs">
+            <button class="calc-tab ativa" data-painel="juros">Juros Compostos</button>
+            <button class="calc-tab" data-painel="meta">Meta de Economia</button>
+            <button class="calc-tab" data-painel="emprestimo">Simulador de Empréstimo</button>
+        </div>
+
+        <!-- Juros Compostos -->
+        <div class="calc-painel ativo" id="painel-juros">
+            <div class="calc-card">
+                <h3 style="margin-bottom: 18px;">Juros Compostos</h3>
+                <div class="campo">
+                    <label>Capital inicial (R$)</label>
+                    <input type="number" id="jc-capital" placeholder="Ex: 5000" min="0" step="0.01">
+                </div>
+                <div class="campo">
+                    <label>Aporte mensal (R$)</label>
+                    <input type="number" id="jc-aporte" placeholder="Ex: 500" min="0" step="0.01">
+                </div>
+                <div class="campo">
+                    <label>Taxa de juros anual (%)</label>
+                    <input type="number" id="jc-taxa" placeholder="Ex: 12" min="0" step="0.01">
+                </div>
+                <div class="campo">
+                    <label>Período (meses)</label>
+                    <input type="number" id="jc-meses" placeholder="Ex: 24" min="1" step="1">
+                </div>
+                <div class="calc-resultado" id="jc-resultado"></div>
+            </div>
+        </div>
+
+        <!-- Meta de Economia -->
+        <div class="calc-painel" id="painel-meta">
+            <div class="calc-card">
+                <h3 style="margin-bottom: 18px;">Meta de Economia</h3>
+                <p style="color: var(--label); font-size: 13px; margin-bottom: 16px;">Quanto preciso guardar por mês para atingir minha meta?</p>
+                <div class="campo">
+                    <label>Valor da meta (R$)</label>
+                    <input type="number" id="meta-valor" placeholder="Ex: 20000" min="0" step="0.01">
+                </div>
+                <div class="campo">
+                    <label>Prazo (meses)</label>
+                    <input type="number" id="meta-meses" placeholder="Ex: 18" min="1" step="1">
+                </div>
+                <div class="campo">
+                    <label>Taxa de juros anual (%) — opcional</label>
+                    <input type="number" id="meta-taxa" placeholder="Ex: 12" min="0" step="0.01" value="0">
+                </div>
+                <div class="calc-resultado" id="meta-resultado"></div>
+            </div>
+        </div>
+
+        <!-- Simulador de Empréstimo -->
+        <div class="calc-painel" id="painel-emprestimo">
+            <div class="calc-card">
+                <h3 style="margin-bottom: 18px;">Simulador de Empréstimo</h3>
+                <p style="color: var(--label); font-size: 13px; margin-bottom: 16px;">Calcule a parcela mensal pelo sistema Price (parcelas fixas).</p>
+                <div class="campo">
+                    <label>Valor do empréstimo (R$)</label>
+                    <input type="number" id="emp-valor" placeholder="Ex: 10000" min="0" step="0.01">
+                </div>
+                <div class="campo">
+                    <label>Taxa de juros anual (%)</label>
+                    <input type="number" id="emp-taxa" placeholder="Ex: 24" min="0" step="0.01">
+                </div>
+                <div class="campo">
+                    <label>Prazo (meses)</label>
+                    <input type="number" id="emp-meses" placeholder="Ex: 12" min="1" step="1">
+                </div>
+                <div class="calc-resultado" id="emp-resultado"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/calculadora.js" type="module"></script>
+</body>
+</html>

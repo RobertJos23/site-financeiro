@@ -1465,3 +1465,204 @@ body.dark .limite-banner {
   accent-color: var(--botao-bg);
   cursor: pointer;
 }
+
+/* ── Badge carteira ── */
+.badge-carteira {
+  display: inline-block;
+  background: rgba(124,58,237,0.12);
+  color: #7c3aed;
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+body.dark .badge-carteira { background: rgba(167,139,250,0.18); color: #a78bfa; }
+
+/* ── Semanas agrupamento ── */
+.semana-header {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 14px 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--label);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+
+.btn-semanas {
+  background: transparent;
+  border: 1px solid var(--borda);
+  color: var(--label);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-semanas:hover, .btn-semanas.ativa {
+  background: var(--botao-bg);
+  color: #fff;
+  border-color: var(--botao-bg);
+}
+
+/* ── CSV import ── */
+.btn-importar {
+  background: transparent;
+  border: 1px solid var(--borda);
+  color: var(--texto);
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.btn-importar:hover { background: var(--bg); }
+
+.csv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.csv-modal-overlay.visivel { display: flex; }
+
+.csv-modal {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 28px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.csv-modal h3 { margin-bottom: 6px; }
+.csv-modal-sub { font-size: 13px; color: var(--label); margin-bottom: 20px; }
+.csv-modal-rodape { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.csv-mapeamento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.csv-preview { overflow-x: auto; margin-top: 14px; }
+.csv-preview table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+  min-width: 300px;
+}
+.csv-preview th, .csv-preview td {
+  padding: 5px 10px;
+  border: 1px solid var(--borda);
+  text-align: left;
+  white-space: nowrap;
+}
+.csv-preview th { background: var(--bg); font-weight: 600; }
+.csv-preview-info { font-size: 12px; color: var(--label); margin-top: 8px; }
+
+/* ── Calculadora ── */
+.calc-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.calc-tab {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--borda);
+  background: var(--card-bg);
+  color: var(--texto);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.calc-tab.ativa {
+  background: var(--botao-bg);
+  color: #fff;
+  border-color: var(--botao-bg);
+}
+.calc-painel { display: none; }
+.calc-painel.ativo { display: block; }
+
+.calc-card {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 540px;
+}
+.calc-resultado {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 18px;
+  margin-top: 20px;
+}
+.calc-resultado-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--borda);
+  font-size: 14px;
+}
+.calc-resultado-item:last-child { border-bottom: none; }
+.calc-resultado-destaque {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--botao-bg);
+}
+
+/* ── Carteiras ── */
+.carteiras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.carteira-card {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 20px;
+}
+.carteira-nome { font-weight: 600; font-size: 15px; margin-bottom: 10px; }
+.carteira-saldo { font-size: 22px; font-weight: bold; margin-bottom: 4px; }
+.carteira-saldo.positivo { color: #2d6a4f; }
+.carteira-saldo.negativo { color: #c0392b; }
+
+/* ── Projeção de saldo ── */
+.projecao-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+.projecao-item {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.projecao-mes { font-size: 12px; color: var(--label); margin-bottom: 6px; font-weight: 600; }
+.projecao-valor { font-size: 20px; font-weight: bold; }
+.projecao-valor.positivo { color: #2d6a4f; }
+.projecao-valor.negativo { color: #c0392b; }
+.projecao-detalhe { font-size: 11px; color: var(--label); margin-top: 6px; line-height: 1.5; }
+
+@media (max-width: 600px) {
+  .csv-mapeamento { grid-template-columns: 1fr; }
+  .projecao-grid { grid-template-columns: 1fr; }
+}

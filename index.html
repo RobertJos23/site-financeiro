@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -32,10 +32,12 @@
             <a href="pages/assistente.html">Assistente IA</a>
             <a href="index.html">Transações</a>
             <a href="pages/categorias.html">Categorias</a>
+            <a href="pages/carteiras.html">Carteiras</a>
             <a href="pages/contas.html">Contas</a>
             <a href="pages/metas.html">Metas</a>
             <a href="pages/relatorios.html">Relatórios</a>
             <a href="pages/investimentos.html">Investimentos</a>
+            <a href="pages/calculadora.html">Calculadora</a>
             <a href="pages/perfil.html">Perfil</a>
         </nav>
     </aside>
@@ -47,33 +49,29 @@
                 <h3>Receitas</h3>
                 <p id="total-receitas">R$ 0,00</p>
             </div>
-
             <div class="card despesas">
                 <h3>Despesas</h3>
                 <p id="total-despesas">R$ 0,00</p>
             </div>
-
             <div class="card saldo">
                 <h3>Saldo</h3>
                 <p id="saldo-total">R$ 0,00</p>
             </div>
-
         </section>
-        <section class = "formulario">
+
+        <section class="formulario">
             <h2>Nova Transação</h2>
             <form id="form-transacao">
                 <div class="campo">
                     <label for="descricao">Descrição</label>
-                    <input type="text" id="descricao" placeholder="Ex: Almoço">
+                    <input type="text" id="descricao" placeholder="Ex: Almoço" required>
                 </div>
-
                 <div class="campo">
-                    <label for="valor">Valor (RS)</label>
-                    <input type="number" id="valor" placeholder="0,00" min="0" step="0.01">
+                    <label for="valor">Valor (R$)</label>
+                    <input type="number" id="valor" placeholder="0,00" min="0" step="0.01" required>
                 </div>
-
                 <div class="campo">
-                    <label for="Tipo"></label>
+                    <label for="tipo">Tipo</label>
                     <select id="tipo">
                         <option value="despesa">Despesa</option>
                         <option value="receita">Receita</option>
@@ -81,31 +79,35 @@
                 </div>
                 <div class="campo">
                     <label for="categoria">Categoria</label>
-                    <select id="categoria">
-                        <option value="alimentacao">Alimentação</option>
-                        <option value="transporte">Transporte</option>
-                        <option value="lazer">Lazer</option>
-                        <option value="saude">Saúde</option>
-                        <option value="outros">Outros</option>
-                    </select>
+                    <select id="categoria"></select>
                 </div>
-
+                <div class="campo">
+                    <label for="carteira">Carteira</label>
+                    <select id="carteira"><option value="">Nenhuma</option></select>
+                </div>
                 <div class="campo">
                     <label for="data">Data</label>
-                    <input type="date" id="data">
+                    <input type="date" id="data" required>
                 </div>
-
+                <div class="campo">
+                    <label for="parcelas">Parcelar em (deixe 1 para não parcelar)</label>
+                    <input type="number" id="parcelas" value="1" min="1" max="48" step="1">
+                </div>
                 <div class="campo campo-check">
                     <label><input type="checkbox" id="recorrente"> Transação recorrente (lançar todo mês)</label>
                 </div>
-
                 <button type="submit">Adicionar</button>
-
             </form>
         </section>
 
         <section class="lista">
-            <h2>Transações</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                <h2 style="margin: 0;">Transações</h2>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="btn-semanas" id="btn-semanas">Agrupar por semana</button>
+                    <button class="btn-importar" id="btn-importar-csv">⬆ Importar CSV</button>
+                </div>
+            </div>
             <div class="filtros-barra">
                 <div class="filtros-linha">
                     <input type="text" id="filtro-busca" class="filtro-busca" placeholder="Buscar por descrição...">
@@ -118,6 +120,9 @@
                     </select>
                     <select id="filtro-categoria-filtro">
                         <option value="">Todas as categorias</option>
+                    </select>
+                    <select id="filtro-carteira">
+                        <option value="">Todas as carteiras</option>
                     </select>
                     <div class="filtros-datas">
                         <span class="filtros-data-label">De</span>
@@ -134,6 +139,45 @@
             <ul id="lista-transacoes"></ul>
         </section>
     </main>
+
+    <!-- Modal importar CSV -->
+    <div class="csv-modal-overlay" id="csv-modal-overlay">
+        <div class="csv-modal">
+            <h3>Importar CSV do banco</h3>
+            <p class="csv-modal-sub">Faça upload do arquivo CSV exportado pelo seu banco. Valores negativos são importados como despesas, positivos como receitas.</p>
+
+            <div class="campo">
+                <label>Arquivo CSV</label>
+                <input type="file" id="csv-file-input" accept=".csv,.txt">
+            </div>
+            <div class="campo">
+                <label>Separador</label>
+                <select id="csv-separador">
+                    <option value=";">Ponto e vírgula ( ; )</option>
+                    <option value=",">Vírgula ( , )</option>
+                    <option value="	">Tab</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Categoria para todas as importações</label>
+                <select id="csv-categoria">
+                    <option value="outros">Outros</option>
+                    <option value="alimentacao">Alimentação</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="lazer">Lazer</option>
+                    <option value="saude">Saúde</option>
+                </select>
+            </div>
+
+            <div class="csv-mapeamento" id="csv-mapeamento"></div>
+            <div class="csv-preview" id="csv-preview"></div>
+
+            <div class="csv-modal-rodape">
+                <button class="btn-limpar" id="csv-modal-fechar">Cancelar</button>
+                <button class="btn-exportar" id="csv-btn-importar">Importar tudo</button>
+            </div>
+        </div>
+    </div>
 
     <script src="js/app.js" type="module"></script>
 </body>

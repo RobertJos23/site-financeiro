@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#16A34A">
-    <title>Categorias</title>
+    <title>Carteiras</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="manifest" href="../manifest.json">
 </head>
@@ -44,22 +44,23 @@
 
     <main>
         <section class="formulario">
-            <h2>Nova Categoria</h2>
-            <form id="form-categoria">
+            <h2>Carteiras / Contas bancárias</h2>
+            <p style="color: var(--label); font-size: 14px; margin-bottom: 20px;">Crie carteiras para separar seu dinheiro por banco, conta ou finalidade. O saldo é calculado com base nas transações associadas.</p>
+            <form id="form-carteira">
                 <div class="campo">
-                    <label for="nome-categoria">Nome</label>
-                    <input type="text" id="nome-categoria" placeholder="Ex: Academia">
+                    <label for="nome-carteira">Nome da carteira</label>
+                    <input type="text" id="nome-carteira" placeholder="Ex: Nubank, Bradesco, Carteira...">
                 </div>
-                <button type="submit">Adicionar</button>
+                <button type="submit">Criar carteira</button>
             </form>
         </section>
 
         <section class="lista">
-            <h2>Categorias</h2>
-            <ul id="lista-categorias"></ul>
+            <h2>Minhas carteiras</h2>
+            <div class="carteiras-grid" id="carteiras-grid"></div>
         </section>
     </main>
 
-    <script src="../js/categorias.js" type="module"></script>
+    <script src="../js/carteiras.js" type="module"></script>
 </body>
 </html>

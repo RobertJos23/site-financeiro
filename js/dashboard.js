@@ -65,6 +65,7 @@ async function carregarDashboard(uid) {
 
     renderizarTopCategorias(transacoesMes)
     renderizarHistorico(todasTransacoes)
+    renderizarProjecao(todasTransacoes, saldo)
     await verificarLimite(uid, despesas)
 
     const snapM = await getDocs(collection(db, 'usuarios', uid, 'metas'))
@@ -76,6 +77,39 @@ async function carregarDashboard(uid) {
     const contas = []
     snapC.forEach(function(d) { contas.push(d.data()) })
     renderizarContasProximas(contas, agora)
+}
+
+function renderizarProjecao(todasTransacoes, saldoAtual) {
+    const container = document.getElementById('dash-projecao')
+    if (!container) return
+
+    const recorrentes = todasTransacoes.filter(function(t) { return t.recorrente === true })
+    const recMensal  = recorrentes.filter(function(t) { return t.tipo === 'receita' }).reduce(function(s, t) { return s + Number(t.valor) }, 0)
+    const despMensal = recorrentes.filter(function(t) { return t.tipo === 'despesa' }).reduce(function(s, t) { return s + Number(t.valor) }, 0)
+    const saldoMensal = recMensal - despMensal
+
+    const agora = new Date()
+    const mesesNome = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+
+    const itens = []
+    let projetado = saldoAtual
+    for (let i = 1; i <= 3; i++) {
+        projetado += saldoMensal
+        const d = new Date(agora.getFullYear(), agora.getMonth() + i, 1)
+        itens.push({ mes: mesesNome[d.getMonth()], saldo: projetado, rec: recMensal, desp: despMensal })
+    }
+
+    container.innerHTML = `
+        <div class="projecao-grid">
+            ${itens.map(function(item) { return `
+                <div class="projecao-item">
+                    <div class="projecao-mes">${item.mes}</div>
+                    <div class="projecao-valor ${item.saldo >= 0 ? 'positivo' : 'negativo'}">R$ ${item.saldo.toFixed(2)}</div>
+                    <div class="projecao-detalhe">+R$ ${item.rec.toFixed(2)} / −R$ ${item.desp.toFixed(2)}</div>
+                </div>`
+            }).join('')}
+        </div>
+        <p style="font-size:11px;color:var(--label);margin-top:10px;">* Baseado nas transações recorrentes cadastradas</p>`
 }
 
 async function verificarLimite(uid, despesas) {
