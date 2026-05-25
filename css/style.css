@@ -1166,11 +1166,36 @@ body.dark .dash-conta-item.urgente {
 /* ── Filtros de transações ── */
 .filtros-barra {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.filtros-linha {
+  display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 16px;
 }
+
+.filtro-busca {
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 9px 14px;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--texto);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filtro-busca:focus { border-color: var(--botao-bg); }
 
 .filtros-barra select,
 .filtros-barra input[type="date"] {
@@ -1178,17 +1203,40 @@ body.dark .dash-conta-item.urgente {
   border-radius: 6px;
   padding: 7px 10px;
   font-size: 13px;
-  background: var(--card-bg);
+  background: var(--bg);
   color: var(--texto);
   outline: none;
   cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.filtros-barra select:focus,
+.filtros-barra input[type="date"]:focus { border-color: var(--botao-bg); }
+
+.filtros-datas {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filtros-data-label {
+  font-size: 12px;
+  color: var(--label);
+  white-space: nowrap;
+}
+
+.filtros-acoes {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
 }
 
 .btn-exportar {
-  background: transparent;
-  border: 1px solid var(--borda);
-  color: var(--texto);
-  padding: 7px 12px;
+  background: var(--botao-bg);
+  border: none;
+  color: #fff;
+  padding: 7px 14px;
   border-radius: 6px;
   font-size: 13px;
   cursor: pointer;
@@ -1196,7 +1244,7 @@ body.dark .dash-conta-item.urgente {
   white-space: nowrap;
 }
 
-.btn-exportar:hover { background: var(--bg); }
+.btn-exportar:hover { background: var(--botao-hover); }
 
 .btn-limpar {
   background: transparent;
@@ -1207,9 +1255,10 @@ body.dark .dash-conta-item.urgente {
   font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
 }
 
-.btn-limpar:hover { background: var(--bg); }
+.btn-limpar:hover { background: var(--bg); color: var(--texto); }
 
 /* ── Orçamento por categoria ── */
 .cat-orcamento {
@@ -1266,7 +1315,8 @@ body.dark .dash-conta-item.urgente {
 @media (max-width: 768px) {
   .dash-grid { grid-template-columns: 1fr; }
   .dash-largo { grid-column: span 1; }
-  .filtros-barra select, .filtros-barra input[type="date"] { font-size: 12px; }
+  .filtros-barra select, .filtros-barra input[type="date"], .filtro-busca { font-size: 12px; }
+  .filtros-acoes { margin-left: 0; }
 }
 
 /* ── Confirmação de exclusão ── */
