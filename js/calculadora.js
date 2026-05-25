@@ -1,11 +1,15 @@
 import { auth } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
-import { configurarHamburger } from './utils.js'
+import { configurarHamburger, esconderLoading } from './utils.js'
 
 configurarHamburger()
 
 onAuthStateChanged(auth, function(usuario) {
-    if (!usuario) window.location.href = '../login.html'
+    if (!usuario) {
+        window.location.href = '../login.html'
+    } else {
+        esconderLoading()
+    }
 })
 
 document.getElementById('btn-logout').addEventListener('click', function() {
