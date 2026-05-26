@@ -1,4 +1,42 @@
 ﻿import { auth } from './firebase.js'
+
+function isWebView() {
+    const ua = navigator.userAgent || ''
+    return /FB_IAB|FBAN|FBAV|Instagram|LinkedInApp/i.test(ua) ||
+           (/wv/.test(ua) && /Android/.test(ua)) ||
+           (/iPhone|iPod|iPad/.test(ua) && !/Safari/.test(ua) && !/CriOS/.test(ua) && !/FxiOS/.test(ua))
+}
+
+const avisoWebView = document.getElementById('aviso-webview')
+if (isWebView() && avisoWebView) {
+    avisoWebView.style.display = 'flex'
+    const urlEl = document.getElementById('aviso-url')
+    if (urlEl) urlEl.textContent = window.location.href
+}
+
+const btnCopiarUrl = document.getElementById('btn-copiar-url')
+if (btnCopiarUrl) {
+    btnCopiarUrl.addEventListener('click', function() {
+        const url = window.location.href
+        const copiar = function() { btnCopiarUrl.textContent = 'Copiado!' }
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(url).then(copiar).catch(function() {
+                fallbackCopiar(url); copiar()
+            })
+        } else {
+            fallbackCopiar(url); copiar()
+        }
+    })
+}
+
+function fallbackCopiar(texto) {
+    const input = document.createElement('input')
+    input.value = texto
+    document.body.appendChild(input)
+    input.select()
+    document.execCommand('copy')
+    document.body.removeChild(input)
+}
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
