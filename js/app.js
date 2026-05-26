@@ -1,7 +1,7 @@
 import { auth, db } from './firebase.js'
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
 import {
-    collection, addDoc, deleteDoc, doc, onSnapshot, query, getDoc, getDocs, setDoc
+    collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, getDoc, getDocs, setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
 import { esconderLoading, configurarHamburger, toast, confirmarAcao } from './utils.js'
 
@@ -10,6 +10,7 @@ configurarHamburger()
 let todasTransacoes = []
 let filtros = { tipo: '', categoria: '', inicio: '', fim: '', busca: '', carteira: '' }
 let modoSemana = false
+let editandoId = null
 
 onAuthStateChanged(auth, function(usuario) {
     if (!usuario) {
@@ -28,12 +29,12 @@ const btnTema = document.getElementById('btn-tema')
 btnTema.addEventListener('click', function() {
     document.body.classList.toggle('dark')
     const escuro = document.body.classList.contains('dark')
-    btnTema.textContent = escuro ? 'Modo Claro' : 'Modo Escuro'
+    btnTema.textContent = escuro ? '☀' : '☾'
     localStorage.setItem('tema', escuro ? 'dark' : 'light')
 })
 if (localStorage.getItem('tema') === 'dark') {
     document.body.classList.add('dark')
-    btnTema.textContent = 'Modo Claro'
+    btnTema.textContent = '☀'
 }
 
 function adicionarMeses(dataStr, qtd) {
@@ -278,9 +279,30 @@ function criarItemTransacao(t) {
             <div class="item-valor">R$ ${Number(t.valor).toFixed(2)}</div>
             <span class="item-tipo ${t.tipo}">${t.tipo}</span>
         </div>
+        <button class="btn-editar" data-id="${t.id}" title="Editar">✎</button>
         <button class="btn-excluir" data-id="${t.id}">×</button>
     `
     return item
+}
+
+function abrirEditar(t) {
+    editandoId = t.id
+    document.getElementById('edit-descricao').value = t.descricao || ''
+    document.getElementById('edit-valor').value     = t.valor || ''
+    document.getElementById('edit-tipo').value      = t.tipo || 'despesa'
+    document.getElementById('edit-data').value      = t.data || ''
+
+    const catSrc  = document.getElementById('categoria')
+    const catDst  = document.getElementById('edit-categoria')
+    catDst.innerHTML = catSrc.innerHTML
+    catDst.value = t.categoria || ''
+
+    const cartSrc = document.getElementById('carteira')
+    const cartDst = document.getElementById('edit-carteira')
+    cartDst.innerHTML = cartSrc.innerHTML
+    cartDst.value = t.carteira || ''
+
+    document.getElementById('modal-editar-overlay').classList.add('visivel')
 }
 
 function configurarBotoesExcluir(container) {
@@ -289,6 +311,12 @@ function configurarBotoesExcluir(container) {
             const ok = await confirmarAcao('Excluir esta transação?')
             if (!ok) return
             await deleteDoc(doc(db, 'usuarios', window._uid, 'transacoes', btn.dataset.id))
+        })
+    })
+    container.querySelectorAll('.btn-editar').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const t = todasTransacoes.find(function(tr) { return tr.id === btn.dataset.id })
+            if (t) abrirEditar(t)
         })
     })
 }
@@ -380,6 +408,47 @@ function iniciar(uid) {
         }
     })
 
+    // Mais opções toggle
+    document.getElementById('btn-mais-opcoes').addEventListener('click', function() {
+        const campos = document.getElementById('campos-avancados')
+        const aberto = campos.style.display !== 'none'
+        campos.style.display = aberto ? 'none' : 'block'
+        this.textContent = aberto ? '+ Mais opções' : '- Menos opções'
+    })
+
+    // Parcelas só para despesa
+    document.getElementById('tipo').addEventListener('change', function() {
+        const campo = document.getElementById('campo-parcelas')
+        if (campo) campo.style.display = this.value === 'receita' ? 'none' : ''
+    })
+
+    // Modal editar
+    document.getElementById('btn-cancelar-editar').addEventListener('click', function() {
+        document.getElementById('modal-editar-overlay').classList.remove('visivel')
+        editandoId = null
+    })
+    document.getElementById('modal-editar-overlay').addEventListener('click', function(e) {
+        if (e.target === this) { this.classList.remove('visivel'); editandoId = null }
+    })
+    document.getElementById('btn-salvar-editar').addEventListener('click', async function() {
+        if (!editandoId) return
+        try {
+            await updateDoc(doc(db, 'usuarios', uid, 'transacoes', editandoId), {
+                descricao: document.getElementById('edit-descricao').value,
+                valor:     document.getElementById('edit-valor').value,
+                tipo:      document.getElementById('edit-tipo').value,
+                categoria: document.getElementById('edit-categoria').value,
+                carteira:  document.getElementById('edit-carteira').value,
+                data:      document.getElementById('edit-data').value
+            })
+            toast('Transação atualizada!')
+            document.getElementById('modal-editar-overlay').classList.remove('visivel')
+            editandoId = null
+        } catch(e) {
+            toast('Erro ao salvar.', 'erro')
+        }
+    })
+
     // Form de nova transação
     document.getElementById('form-transacao').addEventListener('submit', async function(evento) {
         evento.preventDefault()
@@ -413,6 +482,9 @@ function iniciar(uid) {
                 toast('Transação adicionada!')
             }
             document.getElementById('form-transacao').reset()
+            document.getElementById('campos-avancados').style.display = 'none'
+            document.getElementById('btn-mais-opcoes').textContent = '+ Mais opções'
+            document.getElementById('campo-parcelas').style.display = ''
         } catch(e) {
             toast('Erro ao salvar transação.', 'erro')
         }

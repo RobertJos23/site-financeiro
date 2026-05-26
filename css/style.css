@@ -154,11 +154,13 @@ button[type="submit"]:hover {
     background: transparent;
     border: 1px solid var(--borda);
     color: var(--texto);
-    padding: 6px 12px;
+    padding: 5px 9px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 16px;
     cursor: pointer;
     transition: background 0.2s;
+    line-height: 1;
+    min-width: 34px;
 }
 
 #btn-tema:hover {
@@ -716,6 +718,46 @@ body.dark .btn-logout:hover {
   background: #922b21 !important;
 }
 
+.btn-editar {
+  background: transparent !important;
+  border: 1px solid var(--borda) !important;
+  color: var(--label) !important;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 4px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  padding: 0;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-editar:hover {
+  background: var(--bg) !important;
+  color: var(--botao-bg) !important;
+  border-color: var(--botao-bg) !important;
+}
+
+.btn-mais-opcoes {
+  background: transparent;
+  border: none;
+  color: var(--botao-bg);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 0 12px;
+  display: block;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* ── Loading overlay ── */
 .loading-overlay {
   position: fixed;
@@ -876,6 +918,18 @@ body.dark .btn-logout:hover {
     padding-left: 13px;
 }
 
+.sidebar-grupo {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--label);
+    padding: 16px 16px 4px;
+    pointer-events: none;
+    opacity: 0.75;
+}
+
 /* ── Perfil ── */
 .perfil-card {
   background: var(--card-bg);
@@ -944,7 +998,6 @@ body.dark .btn-logout:hover {
 @media (max-width: 480px) {
   .topbar { padding: 0 10px; }
   .topbar-titulo { font-size: 14px; padding: 0 84px; }
-  #btn-tema { display: none; }
   .btn-logout { padding: 5px 10px; font-size: 12px; }
 }
 

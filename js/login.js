@@ -11,12 +11,12 @@ const btnTema = document.getElementById('btn-tema')
 btnTema.addEventListener('click', function() {
     document.body.classList.toggle('dark')
     const escuro = document.body.classList.contains('dark')
-    btnTema.textContent = escuro ? 'Modo Claro' : 'Modo Escuro'
+    btnTema.textContent = escuro ? '☀' : '☾'
     localStorage.setItem('tema', escuro ? 'dark' : 'light')
 })
 if (localStorage.getItem('tema') === 'dark') {
     document.body.classList.add('dark')
-    btnTema.textContent = 'Modo Claro'
+    btnTema.textContent = '☀'
 }
 
 const abaLogin    = document.getElementById('aba-login')
@@ -67,7 +67,7 @@ formLogin.addEventListener('submit', async function(evento) {
     const erro  = document.getElementById('erro-login')
     try {
         await signInWithEmailAndPassword(auth, email, senha)
-        window.location.href = 'pages/assistente.html'
+        window.location.href = 'pages/dashboard.html'
     } catch(e) {
         erro.textContent = 'E-mail ou senha incorretos.'
     }
@@ -80,7 +80,7 @@ formCadastro.addEventListener('submit', async function(evento) {
     const erro  = document.getElementById('erro-cadastro')
     try {
         await createUserWithEmailAndPassword(auth, email, senha)
-        window.location.href = 'pages/assistente.html'
+        window.location.href = 'pages/dashboard.html'
     } catch(e) {
         if (e.code === 'auth/email-already-in-use') {
             erro.textContent = 'Este e-mail já está em uso.'
@@ -110,7 +110,7 @@ document.getElementById('btn-google').addEventListener('click', async function()
     const provider = new GoogleAuthProvider()
     try {
         await signInWithPopup(auth, provider)
-        window.location.href = 'pages/assistente.html'
+        window.location.href = 'pages/dashboard.html'
     } catch(e) {
         console.error('Erro login Google:', e)
     }

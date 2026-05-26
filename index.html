@@ -16,7 +16,7 @@
         <button id="btn-menu" class="btn-menu">&#9776;</button>
         <span class="topbar-titulo">Controle Financeiro</span>
         <div class="topbar-acoes">
-            <button id="btn-tema">Modo Escuro</button>
+            <button id="btn-tema" title="Alternar tema">&#9790;</button>
             <button class="btn-logout" id="btn-logout">Sair</button>
         </div>
     </header>
@@ -28,16 +28,19 @@
             <button id="btn-fechar-sidebar" class="btn-fechar-sidebar">&#10005;</button>
         </div>
         <nav class="sidebar-nav">
+            <span class="sidebar-grupo">Finanças</span>
             <a href="pages/dashboard.html">Dashboard</a>
-            <a href="pages/assistente.html">Assistente IA</a>
             <a href="index.html">Transações</a>
-            <a href="pages/categorias.html">Categorias</a>
             <a href="pages/carteiras.html">Carteiras</a>
             <a href="pages/contas.html">Contas</a>
+            <span class="sidebar-grupo">Planejamento</span>
             <a href="pages/metas.html">Metas</a>
+            <a href="pages/categorias.html">Categorias</a>
             <a href="pages/relatorios.html">Relatórios</a>
-            <a href="pages/investimentos.html">Investimentos</a>
+            <span class="sidebar-grupo">Ferramentas</span>
+            <a href="pages/assistente.html">Assistente IA</a>
             <a href="pages/calculadora.html">Calculadora</a>
+            <a href="pages/investimentos.html">Investimentos</a>
             <a href="pages/perfil.html">Perfil</a>
         </nav>
     </aside>
@@ -78,23 +81,26 @@
                     </select>
                 </div>
                 <div class="campo">
-                    <label for="categoria">Categoria</label>
-                    <select id="categoria"></select>
-                </div>
-                <div class="campo">
-                    <label for="carteira">Carteira</label>
-                    <select id="carteira"><option value="">Nenhuma</option></select>
-                </div>
-                <div class="campo">
                     <label for="data">Data</label>
                     <input type="date" id="data" required>
                 </div>
-                <div class="campo">
-                    <label for="parcelas">Parcelar em (deixe 1 para não parcelar)</label>
-                    <input type="number" id="parcelas" value="1" min="1" max="48" step="1">
-                </div>
-                <div class="campo campo-check">
-                    <label><input type="checkbox" id="recorrente"> Transação recorrente (lançar todo mês)</label>
+                <button type="button" id="btn-mais-opcoes" class="btn-mais-opcoes">+ Mais opções</button>
+                <div id="campos-avancados" style="display:none">
+                    <div class="campo">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria"></select>
+                    </div>
+                    <div class="campo">
+                        <label for="carteira">Carteira</label>
+                        <select id="carteira"><option value="">Nenhuma</option></select>
+                    </div>
+                    <div class="campo" id="campo-parcelas">
+                        <label for="parcelas">Parcelar em (deixe 1 para não parcelar)</label>
+                        <input type="number" id="parcelas" value="1" min="1" max="48" step="1">
+                    </div>
+                    <div class="campo campo-check">
+                        <label><input type="checkbox" id="recorrente"> Transação recorrente (lançar todo mês)</label>
+                    </div>
                 </div>
                 <button type="submit">Adicionar</button>
             </form>
@@ -175,6 +181,44 @@
             <div class="csv-modal-rodape">
                 <button class="btn-limpar" id="csv-modal-fechar">Cancelar</button>
                 <button class="btn-exportar" id="csv-btn-importar">Importar tudo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal editar transação -->
+    <div class="csv-modal-overlay" id="modal-editar-overlay">
+        <div class="csv-modal">
+            <h3>Editar Transação</h3>
+            <div class="campo">
+                <label>Descrição</label>
+                <input type="text" id="edit-descricao">
+            </div>
+            <div class="campo">
+                <label>Valor (R$)</label>
+                <input type="number" id="edit-valor" min="0" step="0.01">
+            </div>
+            <div class="campo">
+                <label>Tipo</label>
+                <select id="edit-tipo">
+                    <option value="despesa">Despesa</option>
+                    <option value="receita">Receita</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Categoria</label>
+                <select id="edit-categoria"></select>
+            </div>
+            <div class="campo">
+                <label>Carteira</label>
+                <select id="edit-carteira"><option value="">Nenhuma</option></select>
+            </div>
+            <div class="campo">
+                <label>Data</label>
+                <input type="date" id="edit-data">
+            </div>
+            <div class="csv-modal-rodape">
+                <button class="btn-limpar" id="btn-cancelar-editar">Cancelar</button>
+                <button class="btn-exportar" id="btn-salvar-editar">Salvar</button>
             </div>
         </div>
     </div>

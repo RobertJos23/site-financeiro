@@ -27,13 +27,13 @@ const btnTema = document.getElementById('btn-tema')
 btnTema.addEventListener('click', function() {
     document.body.classList.toggle('dark')
     const escuro = document.body.classList.contains('dark')
-    btnTema.textContent = escuro ? 'Modo Claro' : 'Modo Escuro'
+    btnTema.textContent = escuro ? '☀' : '☾'
     localStorage.setItem('tema', escuro ? 'dark' : 'light')
 })
 
 if (localStorage.getItem('tema') === 'dark') {
     document.body.classList.add('dark')
-    btnTema.textContent = 'Modo Claro'
+    btnTema.textContent = '☀'
 }
 
 function renderizarGraficoRD(transacoes) {
