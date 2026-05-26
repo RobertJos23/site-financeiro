@@ -930,6 +930,45 @@ body.dark .btn-logout:hover {
     opacity: 0.75;
 }
 
+/* ── Rodapé da sidebar (redes sociais) ── */
+.sidebar-footer {
+    padding: 10px 8px 16px;
+    border-top: 1px solid var(--borda);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-social-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto);
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-social-btn svg {
+    flex-shrink: 0;
+}
+
+.sidebar-social-btn:hover {
+    background: var(--bg);
+}
+
+.sidebar-social-btn.linkedin:hover {
+    color: #0A66C2;
+    background: rgba(10, 102, 194, 0.08);
+}
+
+body.dark .sidebar-social-btn.linkedin:hover {
+    background: rgba(10, 102, 194, 0.15);
+}
+
 /* ── Perfil ── */
 .perfil-card {
   background: var(--card-bg);
